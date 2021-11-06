@@ -25,7 +25,7 @@ public class MonitoredHealthParametersController {
 
     @PostMapping("/monitoredHealthParameters/{login}")
     public ResponseEntity<MonitoredHealthParameters> addMonitoredHealthParameters(@RequestBody MonitoredHealthParameters monitoredHealthParameters, @PathVariable String login) {
-        monitoredHealthParametersService.addMonitoredHealthParameters(login, monitoredHealthParameters.getWeight(), monitoredHealthParameters.getSystolicPressure(), monitoredHealthParameters.getDiaSystolicPressure(), monitoredHealthParameters.getBloodSugarLevel());
+        monitoredHealthParametersService.addMonitoredHealthParameters(login, monitoredHealthParameters.getSystolicPressure(), monitoredHealthParameters.getDiaSystolicPressure(), monitoredHealthParameters.getBloodSugarLevel());
         return new ResponseEntity<MonitoredHealthParameters>(HttpStatus.OK);
 
     }

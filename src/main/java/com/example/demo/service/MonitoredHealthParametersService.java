@@ -6,7 +6,7 @@ public interface MonitoredHealthParametersService {
 
     MonitoredHealthParameters create(MonitoredHealthParameters monitoredHealthParameters);
 
-    MonitoredHealthParameters addMonitoredHealthParameters(String login, double weight, int systolicPressure, int diaSystolicPressure, int bloodSugarLevel);
+    MonitoredHealthParameters addMonitoredHealthParameters(String login,  int systolicPressure, int diaSystolicPressure, int bloodSugarLevel);
 
     void MonitoredHealthParameters(Long id);
 }

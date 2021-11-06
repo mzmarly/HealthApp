@@ -25,11 +25,11 @@ public class MonitoredHealthParametersServiceImpl implements MonitoredHealthPara
     }
 
     @Override
-    public MonitoredHealthParameters addMonitoredHealthParameters(String login, double weight, int systolicPressure, int diaSystolicPressure, int bloodSugarLevel) {
+    public MonitoredHealthParameters addMonitoredHealthParameters(String login, int systolicPressure, int diaSystolicPressure, int bloodSugarLevel) {
         LocalDate date = LocalDate.now();
         long basicMonitoredHealthParametersId = monitoredHealthParametersRepository.findAll().size();
         var user = userRepository.findByLogin(login).orElseThrow();
-        MonitoredHealthParameters monitoredHealthParameters = new MonitoredHealthParameters(basicMonitoredHealthParametersId,date, weight, systolicPressure, diaSystolicPressure,bloodSugarLevel);
+        MonitoredHealthParameters monitoredHealthParameters = new MonitoredHealthParameters(basicMonitoredHealthParametersId,date, systolicPressure, diaSystolicPressure,bloodSugarLevel);
         monitoredHealthParametersRepository.save(monitoredHealthParameters);
         Set<MonitoredHealthParameters> monitoredHealthParametersSet=user.getMonitoredHealthParameters();
         monitoredHealthParametersSet.add(monitoredHealthParameters);

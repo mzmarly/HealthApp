@@ -14,11 +14,15 @@ public class BasicUserData {
     @Column(name = "age")
     private int age;
 
-    public BasicUserData(long basicUserDataId, int age, Sex sex, PhysicalActivity physicalActivity) {
+    @Column(name = "height")
+    private double height;
+
+    public BasicUserData(long basicUserDataId, int age, Sex sex, PhysicalActivity physicalActivity,double height) {
         this.basicUserDataId = basicUserDataId;
         this.age = age;
         this.sex = sex;
         this.physicalActivity = physicalActivity;
+        this.height = height;
     }
     public BasicUserData() {
 

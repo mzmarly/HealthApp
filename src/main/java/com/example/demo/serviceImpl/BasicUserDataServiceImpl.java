@@ -27,10 +27,10 @@ public class BasicUserDataServiceImpl implements BasicUserDataService {
     }
 
     @Override
-    public BasicUserData addBasicUserData(String login, int age, Sex sex, PhysicalActivity physicalActivity) {
-        long basicUserDataId = basicUserDataRepository.findAll().size()+1;
+    public BasicUserData addBasicUserData(String login, int age, Sex sex, PhysicalActivity physicalActivity,double height) {
+        long basicUserDataId = basicUserDataRepository.findAll().size();
         var user = userRepository.findByLogin(login).orElseThrow();
-        BasicUserData basicUserData = new BasicUserData(basicUserDataId, age, sex, physicalActivity);
+        BasicUserData basicUserData = new BasicUserData(basicUserDataId, age, sex, physicalActivity,height);
         basicUserDataRepository.save(basicUserData);
         Set<BasicUserData> basicUserDataSet=user.getBasicUserData();
         basicUserDataSet.add(basicUserData);

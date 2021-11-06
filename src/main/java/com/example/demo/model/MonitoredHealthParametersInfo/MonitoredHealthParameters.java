@@ -16,13 +16,11 @@ public class MonitoredHealthParameters {
     @Column(name = "date")
     private LocalDate date;
 
-    @Column(name = "weight")
-    private double weight;
 
-    public MonitoredHealthParameters(long monitoredHealthParametersId, LocalDate date, double weight, int systolicPressure, int diaSystolicPressure, int bloodSugarLevel) {
+
+    public MonitoredHealthParameters(long monitoredHealthParametersId, LocalDate date,  int systolicPressure, int diaSystolicPressure, int bloodSugarLevel) {
         this.monitoredHealthParametersId = monitoredHealthParametersId;
         this.date = date;
-        this.weight = weight;
         this.systolicPressure = systolicPressure;
         this.diaSystolicPressure = diaSystolicPressure;
         this.bloodSugarLevel = bloodSugarLevel;

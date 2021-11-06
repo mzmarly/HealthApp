@@ -59,7 +59,7 @@ public class BasicUserDataController {
     }
     @PostMapping ("/basicUserData/{login}")
         public ResponseEntity <BasicUserData> addBasicUserInfo(@RequestBody BasicUserData basicUserData,@PathVariable String login){
-        basicUserDataService.addBasicUserData(login,basicUserData.getAge(),basicUserData.getSex(),basicUserData.getPhysicalActivity());
+        basicUserDataService.addBasicUserData(login,basicUserData.getAge(),basicUserData.getSex(),basicUserData.getPhysicalActivity(),basicUserData.getHeight());
         return new ResponseEntity<BasicUserData>(HttpStatus.OK);
     }
 

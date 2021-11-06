@@ -24,16 +24,19 @@ public class BodyDimensionsController {
 
     @GetMapping("/bodyDimensions")
     public Iterable<BodyDimensions> getInfo() {
+//        System.out.println(bodyDimensionsService.getAverageByMonth("miccid","NOVEMBER"));
+        //  double[]tab=bodyDimensionsService.getMinMaxParams("miccid");
+        System.out.println(bodyDimensionsService.calculateBMI("miccid"));
         return bodyDimensionsRepository.findAll();
     }
 
     @PostMapping("/bodyDimensions/{login}")
-    public ResponseEntity<BodyDimensions> addBasicUserData(@RequestBody BodyDimensions bodyDimensions,@PathVariable String login)
-    {
-        bodyDimensionsService.addBodyDimensions(login,bodyDimensions.getShoulders(),bodyDimensions.getWaist(), bodyDimensions.getHips());
+    public ResponseEntity<BodyDimensions> addBasicUserData(@RequestBody BodyDimensions bodyDimensions, @PathVariable String login) {
+        bodyDimensionsService.addBodyDimensions(login, bodyDimensions.getShoulders(), bodyDimensions.getWaist(), bodyDimensions.getHips(),bodyDimensions.getWeight());
         return new ResponseEntity<BodyDimensions>(HttpStatus.OK);
 
     }
+
     @DeleteMapping("/removeBodyDimensions/{id}")
     public ResponseEntity<HttpStatus> removeRating(@PathVariable(value = "id") long id) {
         bodyDimensionsService.removeBodyDimensions(id);

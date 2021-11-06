@@ -8,7 +8,7 @@ public interface BasicUserDataService {
 
     BasicUserData create(BasicUserData basicUserData);
 
-    BasicUserData addBasicUserData(String login, int age, Sex sex, PhysicalActivity physicalActivity);
+    BasicUserData addBasicUserData(String login, int age, Sex sex, PhysicalActivity physicalActivity,double height);
 
     void removeBasicUserData(Long id);
 }

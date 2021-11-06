@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class BodyDimensionsServiceImpl implements BodyDimensionsService {
@@ -26,11 +26,11 @@ public class BodyDimensionsServiceImpl implements BodyDimensionsService {
     }
 
     @Override
-    public BodyDimensions addBodyDimensions(String login, double shoulders, double waist, double hips) {
+    public BodyDimensions addBodyDimensions(String login, double shoulders, double waist, double hips,double weight) {
         LocalDate date = LocalDate.now();
-        long bodyDimensionsId = bodyDimensionsRepository.findAll().size() + 1;
+        long bodyDimensionsId = bodyDimensionsRepository.findAll().size();
         var user = userRepository.findByLogin(login).orElseThrow();
-        BodyDimensions bodyDimensions = new BodyDimensions(bodyDimensionsId, date, shoulders, waist, hips);
+        BodyDimensions bodyDimensions = new BodyDimensions(bodyDimensionsId, date, shoulders, waist, hips,weight);
         bodyDimensionsRepository.save(bodyDimensions);
         Set<BodyDimensions> bodyDimensionsSet = user.getBodyDimensionsons();
         bodyDimensionsSet.add(bodyDimensions);
@@ -45,4 +45,70 @@ public class BodyDimensionsServiceImpl implements BodyDimensionsService {
         bodyDimensionsRepository.deleteById(id);
 
     }
+
+    @Override
+    public double[] getMinMaxParams(String login) {
+        List<BodyDimensions> bodyDimensionsList = getListForUser(login);
+        double min = bodyDimensionsList.get(0).getHips();
+        double max = bodyDimensionsList.get(0).getHips();
+
+        int size = bodyDimensionsList.size();
+        if (size >= 7) {
+            for (int i = size - 1; i >= size - 7; i--) {
+                if (max < bodyDimensionsList.get(i).getHips())
+                    max = bodyDimensionsList.get(i).getHips();
+                if (min > bodyDimensionsList.get(i).getHips())
+                    min = bodyDimensionsList.get(i).getHips();
+            }
+
+        } else System.out.println("za malo danych");
+        System.out.println("min " + min + " max " + max);
+        return new double[]{min, max};
+    }
+
+    @Override
+    public double calculateWHR(String login) {
+        List<BodyDimensions> bodyDimensionsList = getListForUser(login);
+        int size=bodyDimensionsList.size()-1;
+        return bodyDimensionsList.get(size).getWaist()/bodyDimensionsList.get(size).getHips();
+    }
+
+    @Override
+    public double calculateBMI(String login) {
+        List<BodyDimensions> bodyDimensionsList = getListForUser(login);
+        var user = userRepository.findByLogin(login).orElseThrow();
+        int size=bodyDimensionsList.size()-1;
+
+        double height = user.getBasicUserData().stream().findFirst().get().getHeight();
+
+        return bodyDimensionsList.get(size).getWeight()/Math.pow(height/100,2);
+    }
+
+    @Override
+    public double getAverageByMonth(String login, String month) {
+        List<BodyDimensions> bodyDimensionsList = getListForUser(login);
+        double sum = 0;
+        int counter = 0;
+        for (BodyDimensions bodyDimensions : bodyDimensionsList) {
+            if (bodyDimensions.getDate().getMonth().toString().equals(month)) {
+                counter++;
+                sum += bodyDimensions.getHips();
+            }
+        }
+        return sum / counter;
+    }
+
+    public List<BodyDimensions> getListForUser(String login) {
+        var user = userRepository.findByLogin(login).orElseThrow();
+        List<BodyDimensions> bodyDimensionsList = new ArrayList<>();
+        for (BodyDimensions i : user.getBodyDimensionsons()) {
+            System.out.println("ID" + i.getBodyDimensionsId());
+            bodyDimensionsList.add(i);
+        }
+        Collections.sort(bodyDimensionsList);
+
+        return bodyDimensionsList;
+    }
+
+
 }
