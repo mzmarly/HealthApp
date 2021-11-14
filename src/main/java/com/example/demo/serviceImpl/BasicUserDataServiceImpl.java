@@ -41,9 +41,17 @@ public class BasicUserDataServiceImpl implements BasicUserDataService {
     }
 
     @Override
+    public void updateBasicUserDataPhysicalActivity(String login, PhysicalActivity physicalActivity) {
+        var user = userRepository.findByLogin(login).orElseThrow();
+        Set<BasicUserData> set=user.getBasicUserData();
+        BasicUserData[] userDataArray= set.toArray(set.toArray(new BasicUserData[0]));
+        userDataArray[0].setPhysicalActivity(physicalActivity);
+        userRepository.save(user);
+    }
+
+    @Override
     public void removeBasicUserData(Long id) {
         basicUserDataRepository.deleteById(id);
     }
-
 
 }

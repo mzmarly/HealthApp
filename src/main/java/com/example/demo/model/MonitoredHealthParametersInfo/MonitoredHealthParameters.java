@@ -8,15 +8,13 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "monitoredHealthParameters")
 @Data
-public class MonitoredHealthParameters {
+public class MonitoredHealthParameters implements Comparable<MonitoredHealthParameters>  {
     @Id
     @Column(name = "monitoredHealthParameters_id")
     private long monitoredHealthParametersId;
 
     @Column(name = "date")
     private LocalDate date;
-
-
 
     public MonitoredHealthParameters(long monitoredHealthParametersId, LocalDate date,  int systolicPressure, int diaSystolicPressure, int bloodSugarLevel) {
         this.monitoredHealthParametersId = monitoredHealthParametersId;
@@ -37,4 +35,9 @@ public class MonitoredHealthParameters {
 
     @Column(name = "bloodSugarLevel")
     private int bloodSugarLevel;
+
+    @Override
+    public int compareTo(MonitoredHealthParameters o) {
+        return Long.compare(this.getMonitoredHealthParametersId(),o.getMonitoredHealthParametersId());
+    }
 }

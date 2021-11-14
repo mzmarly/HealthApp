@@ -3,11 +3,8 @@ package com.example.demo.model;
 import com.example.demo.model.BasicUserDataInfo.BasicUserData;
 import com.example.demo.model.BodyDimensionsInfo.BodyDimensions;
 import com.example.demo.model.MonitoredHealthParametersInfo.MonitoredHealthParameters;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -43,6 +40,14 @@ public class User {
         return bodyDimensionsons;
     }
 
+    public Set<UserReport> getUserReports() {
+        return userReports;
+    }
+
+    public void setUserReports(Set<UserReport> userReports) {
+        this.userReports = userReports;
+    }
+
     public void setBodyDimensionsons(Set<BodyDimensions> bodyDimensionsons) {
         this.bodyDimensionsons = bodyDimensionsons;
     }
@@ -60,6 +65,9 @@ public class User {
 
     @OneToMany
     Set<BodyDimensions> bodyDimensionsons =new HashSet<>();
+
+    @OneToMany
+    Set<UserReport> userReports =new HashSet<>();
 
     @OneToMany
     Set<MonitoredHealthParameters> monitoredHealthParameters =new HashSet<>();

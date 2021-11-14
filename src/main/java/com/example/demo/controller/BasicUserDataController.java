@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.NutrionDataApi.NutritionDataApiController;
 import com.example.demo.model.BasicUserDataInfo.BasicUserData;
+import com.example.demo.model.BasicUserDataInfo.PhysicalActivity;
 import com.example.demo.model.Nutrition;
 import com.example.demo.repository.BasicUserDataRepository;
 import com.example.demo.service.BasicUserDataService;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+
+import static com.example.demo.model.BasicUserDataInfo.PhysicalActivity.ACTIVE_EVERY_DAY;
 
 @RestController
 @RequestMapping("/api")
@@ -39,6 +42,7 @@ public class BasicUserDataController {
             return basicUserDataRepository.findAll();
         }
 
+        //testy do Nutrition
     @GetMapping("/basicUserData1")
     public String getInfo1 () throws IOException, URISyntaxException {
        return nutritionDataApiController.testByMichal("apple");
@@ -49,22 +53,27 @@ public class BasicUserDataController {
         return nutritionService.getFood();
     }
 
-    @PostMapping ("/basicUserData")
-    public ResponseEntity<BasicUserData> addBasicUserData(@RequestBody BasicUserData basicUserData)
-    {
-        HttpStatus status = HttpStatus.CREATED;
-        BasicUserData saved = basicUserDataService.create(basicUserData);
-        return new ResponseEntity<>(saved, status);
-
-    }
+    //Nie poprawne bo nie przydziela uzytkownikowi setu
+//    @PostMapping ("/basicUserData")
+//    public ResponseEntity<BasicUserData> addBasicUserData(@RequestBody BasicUserData basicUserData)
+//    {
+//        HttpStatus status = HttpStatus.CREATED;
+//        BasicUserData saved = basicUserDataService.create(basicUserData);
+//        return new ResponseEntity<>(saved, status);
+//
+//    }
     @PostMapping ("/basicUserData/{login}")
         public ResponseEntity <BasicUserData> addBasicUserInfo(@RequestBody BasicUserData basicUserData,@PathVariable String login){
         basicUserDataService.addBasicUserData(login,basicUserData.getAge(),basicUserData.getSex(),basicUserData.getPhysicalActivity(),basicUserData.getHeight());
         return new ResponseEntity<BasicUserData>(HttpStatus.OK);
     }
-
+    @PostMapping ("/basicUserData/{login}/{physicalActivity}")
+    public ResponseEntity <BasicUserData> updateBasicUserInfo(@PathVariable String login, @PathVariable PhysicalActivity physicalActivity){
+        basicUserDataService.updateBasicUserDataPhysicalActivity(login, physicalActivity);
+        return new ResponseEntity<BasicUserData>(HttpStatus.OK);
+    }
     @DeleteMapping("/basicUserData/{id}")
-    public void removeVisit(@PathVariable long id) {
+    public void removeBasicUserData(@PathVariable long id) {
         basicUserDataService.removeBasicUserData(id);
     }
 
