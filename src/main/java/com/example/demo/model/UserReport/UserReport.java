@@ -1,9 +1,6 @@
-package com.example.demo.model;
+package com.example.demo.model.UserReport;
 
-import com.example.demo.model.HypertensionLevel;
 import lombok.Data;
-import lombok.extern.slf4j.Slf4j;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -17,13 +14,17 @@ public class UserReport {
     @Column(name = "userReport_id")
     private long userReportId;
 
-    public UserReport(long userReportId, HypertensionLevel hypertension) {
+    public UserReport(long userReportId, HypertensionLevel hypertension,DiabetesLevel diabetes) {
         this.userReportId = userReportId;
         this.hypertension = hypertension;
+        this.diabetes = diabetes;
+
     }
     public UserReport() {
     }
     @Column(name = "hypertension")
     private HypertensionLevel hypertension;
+    @Column(name = "diabetes")
+    private DiabetesLevel diabetes;
 
 }

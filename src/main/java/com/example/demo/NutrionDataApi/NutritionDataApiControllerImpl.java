@@ -1,73 +1,35 @@
 package com.example.demo.NutrionDataApi;
 
-//import org.apache.http.HttpEntity;
+import com.example.demo.model.MonitoredHealthParametersInfo.MonitoredHealthParameters;
+import com.example.demo.model.Nutrition;
+import com.example.demo.model.NutritionJSON;
+import com.example.demo.repository.NutritionDataRepository;
+import com.example.demo.repository.UserRepository;
+import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
-import org.apache.http.client.utils.URIBuilder;
 import org.springframework.web.client.RestTemplate;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.web.util.UriComponentsBuilder;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.util.Collections;
+import java.util.Set;
+
 
 @Service
 @Slf4j
 public class NutritionDataApiControllerImpl implements NutritionDataApiController {
 
-   // @Value("${cmc.api.key}")
-    private String apiKey;
+    @Autowired
+    NutritionDataRepository nutritionDataRepository;
 
-    public String getApiKey() {
-        return apiKey;
-    }
-
-    public void setApiKey(String apiKey) {
-        this.apiKey = apiKey;
-    }
-//    @Override
-//    public String makeAPICallForNutritionData(String food) throws URISyntaxException, IOException {
-//
-//        String response_content = "";
-//
-//        URIBuilder query = new URIBuilder("https://api.api-ninjas.com/v1/nutrition?query={food}");
-//
-//        CloseableHttpClient client = HttpClients.createDefault();
-//        HttpGet request = new HttpGet(query.build());
-//
-//        request.setHeader(HttpHeaders.ACCEPT, "application/json");
-//        request.addHeader("X-Api-Key", getApiKey());
-//
-//        CloseableHttpResponse response = client.execute(request);
-//
-//        try {
-//            System.out.println(response.getStatusLine());
-//            HttpEntity entity = response.getEntity();
-//            response_content = EntityUtils.toString(entity);
-//            System.out.println(entity.getContentType());
-//            EntityUtils.consume(entity);
-//        } finally {
-//            response.close();
-//        }
-//        return response_content;
-//    }
+    @Autowired
+    UserRepository userRepository;
 
     @Override
-    public String testByMichal(String food) {
+    public String addFood(String login,String food) {
         String url = "https://api.api-ninjas.com/v1/nutrition?query={food}";
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
-//        headers.setContentType(MediaType.APPLICATION_JSON);
-//        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
         headers.set("X-Api-Key", "lVUYcIaQGBHY4gz40swH3g==9lQqFAvISh7QbLpL");
         HttpEntity request = new HttpEntity(headers);
         ResponseEntity<String> response = restTemplate.exchange(
@@ -77,8 +39,39 @@ public class NutritionDataApiControllerImpl implements NutritionDataApiControlle
                 String.class,
                 food
         );
+        JsonToObject(login, response.getBody());
         log.info(response.getBody());
-        System.out.println("sasasasasasa");
         return response.getBody();
+    }
+
+    public void JsonToObject(String login, String JSONBody) {
+        long nutritionId=nutritionDataRepository.findAll().size();
+        var user = userRepository.findByLogin(login).orElseThrow();
+        String response = JSONBody;
+        Gson gson = new Gson();
+        NutritionJSON[] nutritionDTO = gson.fromJson(response, NutritionJSON[].class);
+        System.out.println(nutritionDTO[0].getName());
+        Nutrition nutrition=new Nutrition(nutritionId,
+                nutritionDTO[0].getName(),
+                nutritionDTO[0].getCalories(),
+                nutritionDTO[0].getServing_size_g(),
+                nutritionDTO[0].getFat_total_g(),
+                nutritionDTO[0].getFat_saturated_g(),
+                nutritionDTO[0].getProtein_g(),
+                nutritionDTO[0].getSodium_mg(),
+                nutritionDTO[0].getPotassium_mg(),
+                nutritionDTO[0].getCholesterol_mg(),
+                nutritionDTO[0].getCarbohydrates_total_g(),
+                nutritionDTO[0].getFiber_g(),
+                nutritionDTO[0].getSugar_g()
+        );
+        nutritionDataRepository.save(nutrition);
+        Set<Nutrition> nutritionSet=user.getNutritions();
+        nutritionSet.add(nutrition);
+        user.setNutritions(nutritionSet);
+        user.getNutritions().add(nutrition);
+        userRepository.save(user);
+
+
     }
 }

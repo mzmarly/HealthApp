@@ -3,6 +3,7 @@ package com.example.demo.model;
 import com.example.demo.model.BasicUserDataInfo.BasicUserData;
 import com.example.demo.model.BodyDimensionsInfo.BodyDimensions;
 import com.example.demo.model.MonitoredHealthParametersInfo.MonitoredHealthParameters;
+import com.example.demo.model.UserReport.UserReport;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -71,6 +72,17 @@ public class User {
 
     @OneToMany
     Set<MonitoredHealthParameters> monitoredHealthParameters =new HashSet<>();
+
+    @OneToMany
+    Set<Nutrition> nutritions=new HashSet<>();
+
+    public Set<Nutrition> getNutritions() {
+        return nutritions;
+    }
+
+    public void setNutritions(Set<Nutrition> nutritions) {
+        this.nutritions = nutritions;
+    }
 
     public User(long userId, String nameSurname, String login, String email, String password) {
         this.userId = userId;

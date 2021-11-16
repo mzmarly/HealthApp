@@ -1,7 +1,8 @@
 package com.example.demo.serviceImpl;
 
-import com.example.demo.model.UserReport;
-import com.example.demo.model.HypertensionLevel;
+import com.example.demo.model.UserReport.DiabetesLevel;
+import com.example.demo.model.UserReport.UserReport;
+import com.example.demo.model.UserReport.HypertensionLevel;
 import com.example.demo.repository.UserReportRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.UserReportService;
@@ -20,10 +21,10 @@ public class UserReportServiceImpl implements UserReportService {
     UserRepository userRepository;
 
     @Override
-    public UserReport addUserReport(String login, HypertensionLevel hypertensionLevel) {
+    public UserReport addUserReport(String login, HypertensionLevel hypertensionLevel, DiabetesLevel diabetesLevel) {
         var user = userRepository.findByLogin(login).orElseThrow();
         long userReportId=userReportRepository.findAll().size();
-        UserReport userReport= new UserReport(userReportId,hypertensionLevel);
+        UserReport userReport= new UserReport(userReportId,hypertensionLevel,diabetesLevel);
         userReportRepository.save(userReport);
         Set<UserReport> userReportSet = user.getUserReports();
         userReportSet.add(userReport);

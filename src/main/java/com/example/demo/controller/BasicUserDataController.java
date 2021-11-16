@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
-import static com.example.demo.model.BasicUserDataInfo.PhysicalActivity.ACTIVE_EVERY_DAY;
-
 @RestController
 @RequestMapping("/api")
 public class BasicUserDataController {
@@ -45,7 +43,7 @@ public class BasicUserDataController {
         //testy do Nutrition
     @GetMapping("/basicUserData1")
     public String getInfo1 () throws IOException, URISyntaxException {
-       return nutritionDataApiController.testByMichal("apple");
+       return nutritionDataApiController.addFood("miccid","apple");
     }
 
     @GetMapping("/food")

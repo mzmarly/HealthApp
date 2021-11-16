@@ -1,10 +1,9 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.BasicUserDataInfo.BasicUserData;
-import com.example.demo.model.UserReport;
+import com.example.demo.model.UserReport.UserReport;
 import com.example.demo.repository.UserReportRepository;
 import com.example.demo.service.UserReportService;
-import com.example.demo.service.diseasesChecker.HypertensionCheckerService;
+import com.example.demo.service.diseasesChecker.DiseasesCheckerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +17,7 @@ public class UserReportController {
     UserReportRepository userReportRepository;
 
     @Autowired
-    HypertensionCheckerService hypertensionCheckerService;
+    DiseasesCheckerService diseasesCheckerService;
 
     @Autowired
     UserReportService userReportService;
@@ -30,7 +29,7 @@ public class UserReportController {
 
     @PostMapping("/userReport/{login}")
     public ResponseEntity<UserReport> addUserReport(@RequestBody UserReport userReport, @PathVariable String login){
-        userReportService.addUserReport(login,userReport.getHypertension());
+        userReportService.addUserReport(login,userReport.getHypertension(),userReport.getDiabetes());
         return new ResponseEntity<UserReport>(HttpStatus.OK);
     }
 

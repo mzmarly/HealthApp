@@ -1,12 +1,13 @@
 package com.example.demo.serviceImpl.diseasesCheckerImpl;
 
-import com.example.demo.model.UserReport;
-import com.example.demo.model.HypertensionLevel;
+import com.example.demo.model.UserReport.DiabetesLevel;
+import com.example.demo.model.UserReport.UserReport;
+import com.example.demo.model.UserReport.HypertensionLevel;
 import com.example.demo.model.MonitoredHealthParametersInfo.MonitoredHealthParameters;
 import com.example.demo.repository.MonitoredHealthParametersRepository;
 import com.example.demo.repository.UserReportRepository;
 import com.example.demo.repository.UserRepository;
-import com.example.demo.service.diseasesChecker.HypertensionCheckerService;
+import com.example.demo.service.diseasesChecker.DiseasesCheckerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +17,7 @@ import java.util.List;
 import java.util.Set;
 
 @Service
-public class HypertensionCheckerServiceImpl implements HypertensionCheckerService {
+public class DiseasesCheckerServiceImpl implements DiseasesCheckerService {
 
     @Autowired
     MonitoredHealthParametersRepository monitoredHealthParametersRepository;
@@ -59,9 +60,27 @@ public class HypertensionCheckerServiceImpl implements HypertensionCheckerServic
         userRepository.save(user);
     }
 
+    @Override
+    public void chekDiabetes(String login) {
+        var user = userRepository.findByLogin(login).orElseThrow();
+        UserReport userReport =getLastUserReport(login);
+        List<MonitoredHealthParameters> monitoredHealthParametersList = getListMonitoredHealthParametersForUser(login);
+        MonitoredHealthParameters recentHealthParameters=monitoredHealthParametersList.get(monitoredHealthParametersList.size()-1);
+        int bloodSugarLevel=recentHealthParameters.getBloodSugarLevel();
+        if(bloodSugarLevel>=70 && bloodSugarLevel<=99) {
+            userReport.setDiabetes(DiabetesLevel.OPTIMAL);
+        }
+        else if (bloodSugarLevel>=100 && bloodSugarLevel<=125) {
+            userReport.setDiabetes(DiabetesLevel.HIGH_LEVEL);
+        }
+        else if (bloodSugarLevel>=126) {
+            userReport.setDiabetes(DiabetesLevel.POTENTIAL_DIABETES);
+        }
+        userRepository.save(user);
+    }
+
     public List<MonitoredHealthParameters> getListMonitoredHealthParametersForUser(String login) {
         var user = userRepository.findByLogin(login).orElseThrow();
-        System.out.println("HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHEEEEEEEEEEEEEEEEEEEEEEEEEEJ");
         List<MonitoredHealthParameters> monitoredHealthParametersList = new ArrayList<>();
         for (MonitoredHealthParameters i : user.getMonitoredHealthParameters()) {
             System.out.println("ID" + i.getMonitoredHealthParametersId());
