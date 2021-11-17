@@ -71,6 +71,18 @@
             <artifactId>jackson-databind</artifactId>
             <version>2.11.2</version>
         </dependency>
+<!--        szablony html do maili-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+<!--        mail sender-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+            <version>2.4.2</version>
+        </dependency>
+<!--        zmiana JSONA na obiekt-->
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
