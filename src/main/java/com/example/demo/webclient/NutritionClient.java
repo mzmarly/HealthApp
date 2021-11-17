@@ -38,27 +38,27 @@ public class NutritionClient {
 //
 //    }
 
-    public Nutrition getFood(String food) {
-//        String url = "https://api.api-ninjas.com/v1/nutrition?query={food}";
-//        RestTemplate restTemplate = new RestTemplate();
-//        HttpHeaders headers = new HttpHeaders();
-////        headers.setContentType(MediaType.APPLICATION_JSON);
-////        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-//        headers.set("X-Api-Key", "lVUYcIaQGBHY4gz40swH3g==9lQqFAvISh7QbLpL");
-//        HttpEntity request = new HttpEntity(headers);
-//        ResponseEntity<String> response = restTemplate.exchange(
-//                url,
-//                HttpMethod.GET,
-//                request,
-//                String.class,
-//                food
-//        );
-//        log.info(response.getBody());
-        ResponseEntity<NutritionDto> nutritionDto= callGetMethod("Orange");
-        return Nutrition.builder()
-                .nutritionName(nutritionDto.getClass().getName())
-                .build();
-    }
+//    public Nutrition getFood(String food) {
+////        String url = "https://api.api-ninjas.com/v1/nutrition?query={food}";
+////        RestTemplate restTemplate = new RestTemplate();
+////        HttpHeaders headers = new HttpHeaders();
+//////        headers.setContentType(MediaType.APPLICATION_JSON);
+//////        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+////        headers.set("X-Api-Key", "lVUYcIaQGBHY4gz40swH3g==9lQqFAvISh7QbLpL");
+////        HttpEntity request = new HttpEntity(headers);
+////        ResponseEntity<String> response = restTemplate.exchange(
+////                url,
+////                HttpMethod.GET,
+////                request,
+////                String.class,
+////                food
+////        );
+////        log.info(response.getBody());
+//        ResponseEntity<NutritionDto> nutritionDto= callGetMethod("Orange");
+//        return Nutrition.builder()
+//                .nutritionName(nutritionDto.getClass().getName())
+//                .build();
+//    }
 
 
     private <T> ResponseEntity<NutritionDto> callGetMethod(String food) {

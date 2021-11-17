@@ -18,7 +18,6 @@ public class BodyDimensionsController {
     @Autowired
     BodyDimensionsService bodyDimensionsService;
 
-
     @Autowired
     BodyDimensionsRepository bodyDimensionsRepository;
 
@@ -32,8 +31,8 @@ DiseasesCheckerService diseasesCheckerService;
 //        System.out.println(bodyDimensionsService.getAverageByMonth("miccid","NOVEMBER"));
         //  double[]tab=bodyDimensionsService.getMinMaxParams("miccid");
    //     basicUserDataService.updateBasicUserDataPhysicalActivity("miccid", ACTIVE_EVERY_DAY);
-        diseasesCheckerService.checkHypertension("miccid");
-        System.out.println(bodyDimensionsService.calculateBMI("miccid"));
+//        diseasesCheckerService.checkHypertension("miccid");
+//        System.out.println(bodyDimensionsService.calculateBMI("miccid"));
         return bodyDimensionsRepository.findAll();
     }
 

@@ -7,6 +7,7 @@ import com.example.demo.model.MonitoredHealthParametersInfo.MonitoredHealthParam
 import com.example.demo.repository.MonitoredHealthParametersRepository;
 import com.example.demo.repository.UserReportRepository;
 import com.example.demo.repository.UserRepository;
+import com.example.demo.service.BodyDimensionsService;
 import com.example.demo.service.diseasesChecker.DiseasesCheckerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,33 +29,30 @@ public class DiseasesCheckerServiceImpl implements DiseasesCheckerService {
     @Autowired
     UserReportRepository userReportRepository;
 
+    @Autowired
+    BodyDimensionsService bodyDimensionsService;
+
     @Override
     public void checkHypertension(String login) {
         var user = userRepository.findByLogin(login).orElseThrow();
-        UserReport userReport =getLastUserReport(login);
+        UserReport userReport = getLastUserReport(login);
         List<MonitoredHealthParameters> monitoredHealthParametersList = getListMonitoredHealthParametersForUser(login);
-        MonitoredHealthParameters recentHealthParameters=monitoredHealthParametersList.get(monitoredHealthParametersList.size()-1);
-        int systolicPressure=recentHealthParameters.getSystolicPressure();
-        int diaSystolicPressure=recentHealthParameters.getDiaSystolicPressure();
-        if(systolicPressure<=120 && diaSystolicPressure<=80){
+        MonitoredHealthParameters recentHealthParameters = monitoredHealthParametersList.get(monitoredHealthParametersList.size() - 1);
+        int systolicPressure = recentHealthParameters.getSystolicPressure();
+        int diaSystolicPressure = recentHealthParameters.getDiaSystolicPressure();
+        if (systolicPressure <= 120 && diaSystolicPressure <= 80) {
             userReport.setHypertension(HypertensionLevel.OPTIMAL);
-        }
-        else if(systolicPressure<=129 && diaSystolicPressure<=84){
+        } else if (systolicPressure <= 129 && diaSystolicPressure <= 84) {
             userReport.setHypertension(HypertensionLevel.NORMAL);
-        }
-        else if(systolicPressure<=139 && diaSystolicPressure<=89){
+        } else if (systolicPressure <= 139 && diaSystolicPressure <= 89) {
             userReport.setHypertension(HypertensionLevel.HIGH_NORMAL);
-        }
-        else if(systolicPressure<=159 && diaSystolicPressure<=99){
+        } else if (systolicPressure <= 159 && diaSystolicPressure <= 99) {
             userReport.setHypertension(HypertensionLevel.GRADE_1_HYPERTENSION);
-        }
-        else if(systolicPressure<=179 && diaSystolicPressure<=109){
+        } else if (systolicPressure <= 179 && diaSystolicPressure <= 109) {
             userReport.setHypertension(HypertensionLevel.GRADE_2_HYPERTENSION);
-        }
-        else if(systolicPressure>=180 && diaSystolicPressure>=110){
+        } else if (systolicPressure >= 180 && diaSystolicPressure >= 110) {
             userReport.setHypertension(HypertensionLevel.GRADE_3_HYPERTENSION);
-        }
-        else if(systolicPressure>=140 && diaSystolicPressure<=90){
+        } else if (systolicPressure >= 140 && diaSystolicPressure <= 90) {
             userReport.setHypertension(HypertensionLevel.ISOLATED_SYSTOLIC_HYPERTENSION);
         }
         userRepository.save(user);
@@ -63,19 +61,33 @@ public class DiseasesCheckerServiceImpl implements DiseasesCheckerService {
     @Override
     public void chekDiabetes(String login) {
         var user = userRepository.findByLogin(login).orElseThrow();
-        UserReport userReport =getLastUserReport(login);
+        UserReport userReport = getLastUserReport(login);
         List<MonitoredHealthParameters> monitoredHealthParametersList = getListMonitoredHealthParametersForUser(login);
-        MonitoredHealthParameters recentHealthParameters=monitoredHealthParametersList.get(monitoredHealthParametersList.size()-1);
-        int bloodSugarLevel=recentHealthParameters.getBloodSugarLevel();
-        if(bloodSugarLevel>=70 && bloodSugarLevel<=99) {
+        MonitoredHealthParameters recentHealthParameters = monitoredHealthParametersList.get(monitoredHealthParametersList.size() - 1);
+        int bloodSugarLevel = recentHealthParameters.getBloodSugarLevel();
+        if (bloodSugarLevel >= 70 && bloodSugarLevel <= 99) {
             userReport.setDiabetes(DiabetesLevel.OPTIMAL);
-        }
-        else if (bloodSugarLevel>=100 && bloodSugarLevel<=125) {
+        } else if (bloodSugarLevel >= 100 && bloodSugarLevel <= 125) {
             userReport.setDiabetes(DiabetesLevel.HIGH_LEVEL);
-        }
-        else if (bloodSugarLevel>=126) {
+        } else if (bloodSugarLevel >= 126) {
             userReport.setDiabetes(DiabetesLevel.POTENTIAL_DIABETES);
         }
+        userRepository.save(user);
+    }
+
+    @Override
+    public void checkBMI(String login) {
+        var user = userRepository.findByLogin(login).orElseThrow();
+        UserReport userReport = getLastUserReport(login);
+        userReport.setBmi(bodyDimensionsService.calculateBMI(login));
+        userRepository.save(user);
+    }
+
+    @Override
+    public void checkWHR(String login) {
+        var user = userRepository.findByLogin(login).orElseThrow();
+        UserReport userReport = getLastUserReport(login);
+        userReport.setWhr(bodyDimensionsService.calculateWHR(login));
         userRepository.save(user);
     }
 
@@ -92,10 +104,10 @@ public class DiseasesCheckerServiceImpl implements DiseasesCheckerService {
         return monitoredHealthParametersList;
     }
 
-    public UserReport getLastUserReport(String login){
+    public UserReport getLastUserReport(String login) {
         var user = userRepository.findByLogin(login).orElseThrow();
-        Set<UserReport> set=user.getUserReports();
-        UserReport[] userArray= set.toArray(set.toArray(new UserReport[0]));
+        Set<UserReport> set = user.getUserReports();
+        UserReport[] userArray = set.toArray(set.toArray(new UserReport[0]));
         return userArray[0];
     }
 }

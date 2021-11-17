@@ -24,7 +24,7 @@ public class UserReportServiceImpl implements UserReportService {
     public UserReport addUserReport(String login, HypertensionLevel hypertensionLevel, DiabetesLevel diabetesLevel) {
         var user = userRepository.findByLogin(login).orElseThrow();
         long userReportId=userReportRepository.findAll().size();
-        UserReport userReport= new UserReport(userReportId,hypertensionLevel,diabetesLevel);
+        UserReport userReport= new UserReport(userReportId,hypertensionLevel,diabetesLevel,0.0,0.0);
         userReportRepository.save(userReport);
         Set<UserReport> userReportSet = user.getUserReports();
         userReportSet.add(userReport);

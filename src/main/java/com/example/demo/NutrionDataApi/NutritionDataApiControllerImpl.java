@@ -1,6 +1,5 @@
 package com.example.demo.NutrionDataApi;
 
-import com.example.demo.model.MonitoredHealthParametersInfo.MonitoredHealthParameters;
 import com.example.demo.model.Nutrition;
 import com.example.demo.model.NutritionJSON;
 import com.example.demo.repository.NutritionDataRepository;
@@ -12,6 +11,7 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDate;
 import java.util.Set;
 
 
@@ -26,7 +26,7 @@ public class NutritionDataApiControllerImpl implements NutritionDataApiControlle
     UserRepository userRepository;
 
     @Override
-    public String addFood(String login,String food) {
+    public String getFood(String login, String food) {
         String url = "https://api.api-ninjas.com/v1/nutrition?query={food}";
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
@@ -44,14 +44,27 @@ public class NutritionDataApiControllerImpl implements NutritionDataApiControlle
         return response.getBody();
     }
 
+    @Override
+    public String addFood(String login, String food) {
+        getFood(login,food);
+        return "lll";
+    }
+
+    @Override
+    public void removeFoodById(Long id) {
+        nutritionDataRepository.deleteById(id);
+    }
+
     public void JsonToObject(String login, String JSONBody) {
         long nutritionId=nutritionDataRepository.findAll().size();
         var user = userRepository.findByLogin(login).orElseThrow();
+        LocalDate date = LocalDate.now();
         String response = JSONBody;
         Gson gson = new Gson();
         NutritionJSON[] nutritionDTO = gson.fromJson(response, NutritionJSON[].class);
         System.out.println(nutritionDTO[0].getName());
         Nutrition nutrition=new Nutrition(nutritionId,
+                date,
                 nutritionDTO[0].getName(),
                 nutritionDTO[0].getCalories(),
                 nutritionDTO[0].getServing_size_g(),

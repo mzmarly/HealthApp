@@ -6,9 +6,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.time.LocalDate;
 
 @Entity
-@Builder
+//@Builder
 @Table(name = "nutritions")
 public class Nutrition {
 
@@ -16,14 +17,26 @@ public class Nutrition {
     @Column(name = "nutrition_id")
     private long nutritionId;
 
+    @Column(name = "date")
+    private LocalDate date;
+
     @Column(name = "nutritionName")
     private String nutritionName;
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
 
     @Column(name = "calories")
     private double calories;
 
-    public Nutrition(long nutritionId, String nutritionName, double calories, double serving_size_g, double fat_total_g, double fat_saturated_g, double protein_g, double sodium_mg, double potassium_mg, double cholesterol_mg, double carbohydrates_total_g, double fiber_g, double sugar_g) {
+    public Nutrition(long nutritionId, LocalDate date,String nutritionName, double calories, double serving_size_g, double fat_total_g, double fat_saturated_g, double protein_g, double sodium_mg, double potassium_mg, double cholesterol_mg, double carbohydrates_total_g, double fiber_g, double sugar_g) {
         this.nutritionId = nutritionId;
+        this.date=date;
         this.nutritionName = nutritionName;
         this.calories = calories;
         this.serving_size_g = serving_size_g;

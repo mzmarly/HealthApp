@@ -30,10 +30,10 @@ public class NutritionService {
 //        restTemplate.getForObject()
 //    }
 
-    public Nutrition getFood(){
-//        String response= nutritionClient.getFood("orange");
-//        log.info(response);
-        return nutritionClient.getFood("Orange");
-    }
+//    public Nutrition getFood(){
+////        String response= nutritionClient.getFood("orange");
+////        log.info(response);
+//        return nutritionClient.getFood("Orange");
+//    }
 
 }

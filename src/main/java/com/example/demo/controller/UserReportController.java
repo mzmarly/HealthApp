@@ -33,4 +33,13 @@ public class UserReportController {
         return new ResponseEntity<UserReport>(HttpStatus.OK);
     }
 
+    @PostMapping("/udateRaport/{login}")
+    public ResponseEntity<UserReport> addUserReport(@PathVariable String login){
+        diseasesCheckerService.checkHypertension(login);
+        diseasesCheckerService.chekDiabetes(login);
+        diseasesCheckerService.checkBMI(login);
+        diseasesCheckerService.checkWHR(login);
+        return new ResponseEntity<UserReport>(HttpStatus.OK);
+    }
+
 }

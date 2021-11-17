@@ -1,7 +1,5 @@
 package com.example.demo.model;
 
-import javax.persistence.Column;
-
 public class NutritionJSON {
 
     private String name;

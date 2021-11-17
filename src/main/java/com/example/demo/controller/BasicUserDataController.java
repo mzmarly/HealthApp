@@ -43,13 +43,13 @@ public class BasicUserDataController {
         //testy do Nutrition
     @GetMapping("/basicUserData1")
     public String getInfo1 () throws IOException, URISyntaxException {
-       return nutritionDataApiController.addFood("miccid","apple");
+       return nutritionDataApiController.getFood("miccid","orange");
     }
 
-    @GetMapping("/food")
-    public Nutrition getFood(){
-        return nutritionService.getFood();
-    }
+//    @GetMapping("/food")
+//    public Nutrition getFood(){
+//        return nutritionService.getFood();
+//    }
 
     //Nie poprawne bo nie przydziela uzytkownikowi setu
 //    @PostMapping ("/basicUserData")
