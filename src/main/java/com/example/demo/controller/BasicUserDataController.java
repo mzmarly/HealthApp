@@ -3,7 +3,6 @@ package com.example.demo.controller;
 import com.example.demo.NutrionDataApi.NutritionDataApiController;
 import com.example.demo.model.BasicUserDataInfo.BasicUserData;
 import com.example.demo.model.BasicUserDataInfo.PhysicalActivity;
-import com.example.demo.model.Nutrition;
 import com.example.demo.repository.BasicUserDataRepository;
 import com.example.demo.service.BasicUserDataService;
 import com.example.demo.service.NutritionService;
@@ -43,23 +42,9 @@ public class BasicUserDataController {
         //testy do Nutrition
     @GetMapping("/basicUserData1")
     public String getInfo1 () throws IOException, URISyntaxException {
-       return nutritionDataApiController.getFood("miccid","orange");
+       return nutritionDataApiController.addNutritionByWeight("miccid","orange",1 );
     }
 
-//    @GetMapping("/food")
-//    public Nutrition getFood(){
-//        return nutritionService.getFood();
-//    }
-
-    //Nie poprawne bo nie przydziela uzytkownikowi setu
-//    @PostMapping ("/basicUserData")
-//    public ResponseEntity<BasicUserData> addBasicUserData(@RequestBody BasicUserData basicUserData)
-//    {
-//        HttpStatus status = HttpStatus.CREATED;
-//        BasicUserData saved = basicUserDataService.create(basicUserData);
-//        return new ResponseEntity<>(saved, status);
-//
-//    }
     @PostMapping ("/basicUserData/{login}")
         public ResponseEntity <BasicUserData> addBasicUserInfo(@RequestBody BasicUserData basicUserData,@PathVariable String login){
         basicUserDataService.addBasicUserData(login,basicUserData.getAge(),basicUserData.getSex(),basicUserData.getPhysicalActivity(),basicUserData.getHeight());

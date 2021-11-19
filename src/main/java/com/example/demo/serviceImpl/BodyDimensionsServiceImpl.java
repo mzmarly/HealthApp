@@ -1,6 +1,5 @@
 package com.example.demo.serviceImpl;
 
-import com.example.demo.model.BasicUserDataInfo.BasicUserData;
 import com.example.demo.model.BodyDimensionsInfo.BodyDimensions;
 import com.example.demo.repository.BodyDimensionsRepository;
 import com.example.demo.repository.UserRepository;
@@ -48,7 +47,7 @@ public class BodyDimensionsServiceImpl implements BodyDimensionsService {
 
     @Override
     public double[] getMinMaxParams(String login) {
-        List<BodyDimensions> bodyDimensionsList = getListForUser(login);
+        List<BodyDimensions> bodyDimensionsList = getBodyDimensionsListForUser(login);
         double min = bodyDimensionsList.get(0).getHips();
         double max = bodyDimensionsList.get(0).getHips();
 
@@ -68,14 +67,14 @@ public class BodyDimensionsServiceImpl implements BodyDimensionsService {
 
     @Override
     public double calculateWHR(String login) {
-        List<BodyDimensions> bodyDimensionsList = getListForUser(login);
+        List<BodyDimensions> bodyDimensionsList = getBodyDimensionsListForUser(login);
         int size=bodyDimensionsList.size()-1;
         return bodyDimensionsList.get(size).getWaist()/bodyDimensionsList.get(size).getHips();
     }
 
     @Override
     public double calculateBMI(String login) {
-        List<BodyDimensions> bodyDimensionsList = getListForUser(login);
+        List<BodyDimensions> bodyDimensionsList = getBodyDimensionsListForUser(login);
         var user = userRepository.findByLogin(login).orElseThrow();
         int size=bodyDimensionsList.size()-1;
 
@@ -86,7 +85,7 @@ public class BodyDimensionsServiceImpl implements BodyDimensionsService {
 
     @Override
     public double getAverageByMonth(String login, String month) {
-        List<BodyDimensions> bodyDimensionsList = getListForUser(login);
+        List<BodyDimensions> bodyDimensionsList = getBodyDimensionsListForUser(login);
         double sum = 0;
         int counter = 0;
         for (BodyDimensions bodyDimensions : bodyDimensionsList) {
@@ -98,7 +97,7 @@ public class BodyDimensionsServiceImpl implements BodyDimensionsService {
         return sum / counter;
     }
 
-    public List<BodyDimensions> getListForUser(String login) {
+    public List<BodyDimensions> getBodyDimensionsListForUser(String login) {
         var user = userRepository.findByLogin(login).orElseThrow();
         List<BodyDimensions> bodyDimensionsList = new ArrayList<>();
         for (BodyDimensions i : user.getBodyDimensionsons()) {

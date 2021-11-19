@@ -28,11 +28,6 @@ DiseasesCheckerService diseasesCheckerService;
 
     @GetMapping("/bodyDimensions")
     public Iterable<BodyDimensions> getInfo() {
-//        System.out.println(bodyDimensionsService.getAverageByMonth("miccid","NOVEMBER"));
-        //  double[]tab=bodyDimensionsService.getMinMaxParams("miccid");
-   //     basicUserDataService.updateBasicUserDataPhysicalActivity("miccid", ACTIVE_EVERY_DAY);
-//        diseasesCheckerService.checkHypertension("miccid");
-//        System.out.println(bodyDimensionsService.calculateBMI("miccid"));
         return bodyDimensionsRepository.findAll();
     }
 
