@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import com.example.demo.NutrionDataApi.NutritionDataApiController;
+import com.example.demo.model.UserReport.DailyNutritionReport;
 import com.example.demo.model.UserReport.UserReport;
 import com.example.demo.repository.UserReportRepository;
 import com.example.demo.service.UserReportService;
@@ -22,6 +24,9 @@ public class UserReportController {
     @Autowired
     UserReportService userReportService;
 
+    @Autowired
+    NutritionDataApiController nutritionDataApiController;
+
     @GetMapping("/userReport")
     public Iterable<UserReport> getInfo (){
         return userReportRepository.findAll();
@@ -32,8 +37,13 @@ public class UserReportController {
         userReportService.addUserReport(login,userReport.getHypertension(),userReport.getDiabetes());
         return new ResponseEntity<UserReport>(HttpStatus.OK);
     }
+    @PostMapping("/sumUpNutrition/{login}")
+    public ResponseEntity<DailyNutritionReport> sumUpNutrition(@PathVariable String login){
+        nutritionDataApiController.addSumUpNutrition(login);
+        return new ResponseEntity<DailyNutritionReport>(HttpStatus.OK);
+    }
 
-    @PostMapping("/udateRaport/{login}")
+    @PostMapping("/updateReport/{login}")
     public ResponseEntity<UserReport> addUserReport(@PathVariable String login){
         diseasesCheckerService.checkHypertension(login);
         diseasesCheckerService.chekDiabetes(login);

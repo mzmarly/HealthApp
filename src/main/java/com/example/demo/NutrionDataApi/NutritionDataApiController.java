@@ -1,9 +1,14 @@
 package com.example.demo.NutrionDataApi;
 
+import com.example.demo.model.UserReport.DailyNutritionReport;
+
 public interface NutritionDataApiController {
-    //String makeAPICallForNutritionData(String food) throws URISyntaxException, IOException;
-    String getFood(String login, String food);
-    String addFood(String login, String food);
+    String addNutritionByWeight(String login, String food, double portionWeight);
+
     void removeFoodById(Long id);
+
+    void generateDailyReport(String login);
+
+    DailyNutritionReport addSumUpNutrition(String login);
 
 }

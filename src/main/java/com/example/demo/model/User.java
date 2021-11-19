@@ -3,6 +3,7 @@ package com.example.demo.model;
 import com.example.demo.model.BasicUserDataInfo.BasicUserData;
 import com.example.demo.model.BodyDimensionsInfo.BodyDimensions;
 import com.example.demo.model.MonitoredHealthParametersInfo.MonitoredHealthParameters;
+import com.example.demo.model.UserReport.DailyNutritionReport;
 import com.example.demo.model.UserReport.UserReport;
 
 import javax.persistence.*;

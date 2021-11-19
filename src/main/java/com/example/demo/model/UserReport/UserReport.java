@@ -1,10 +1,11 @@
 package com.example.demo.model.UserReport;
 
 import lombok.Data;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+
+import javax.persistence.*;
+import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "userReport")
@@ -14,8 +15,12 @@ public class UserReport {
     @Column(name = "userReport_id")
     private long userReportId;
 
-    public UserReport(long userReportId, HypertensionLevel hypertension,DiabetesLevel diabetes,double bmi,double whr) {
+    @Column(name= "date")
+    private LocalDate date;
+
+    public UserReport(long userReportId, LocalDate date, HypertensionLevel hypertension, DiabetesLevel diabetes, double bmi, double whr) {
         this.userReportId = userReportId;
+        this.date = date;
         this.hypertension = hypertension;
         this.diabetes = diabetes;
         this.bmi = bmi;
@@ -33,4 +38,14 @@ public class UserReport {
     @Column(name = "WHR")
     private double whr;
 
+    @OneToMany
+    Set<DailyNutritionReport> dailyNutritionReports=new HashSet<>();
+
+    public Set<DailyNutritionReport> getDailyNutritionReports() {
+        return dailyNutritionReports;
+    }
+
+    public void setDailyNutritionReports(Set<DailyNutritionReport> dailyNutritionReports) {
+        this.dailyNutritionReports = dailyNutritionReports;
+    }
 }
