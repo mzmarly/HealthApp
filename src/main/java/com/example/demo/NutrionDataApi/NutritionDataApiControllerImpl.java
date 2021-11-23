@@ -1,8 +1,7 @@
 package com.example.demo.NutrionDataApi;
 
-import com.example.demo.model.BodyDimensionsInfo.BodyDimensions;
-import com.example.demo.model.Nutrition;
-import com.example.demo.model.NutritionJSON;
+import com.example.demo.model.Nutrtion.Nutrition;
+import com.example.demo.model.Nutrtion.NutritionJSON;
 import com.example.demo.model.UserReport.DailyNutritionReport;
 import com.example.demo.model.UserReport.UserReport;
 import com.example.demo.repository.DailyNutritionReportRepository;

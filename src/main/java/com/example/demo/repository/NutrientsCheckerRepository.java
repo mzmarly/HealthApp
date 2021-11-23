@@ -1,10 +1,9 @@
 package com.example.demo.repository;
 
-import com.example.demo.model.Nutrtion.Nutrition;
-
+import com.example.demo.model.NutrientsChecker.NutrientsChecker;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface NutritionDataRepository extends JpaRepository<Nutrition, Long> {
+public interface NutrientsCheckerRepository extends JpaRepository<NutrientsChecker, Long> {
 }

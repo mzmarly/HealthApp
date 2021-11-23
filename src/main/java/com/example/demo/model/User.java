@@ -3,7 +3,8 @@ package com.example.demo.model;
 import com.example.demo.model.BasicUserDataInfo.BasicUserData;
 import com.example.demo.model.BodyDimensionsInfo.BodyDimensions;
 import com.example.demo.model.MonitoredHealthParametersInfo.MonitoredHealthParameters;
-import com.example.demo.model.UserReport.DailyNutritionReport;
+import com.example.demo.model.NutrientsChecker.NutrientsChecker;
+import com.example.demo.model.Nutrtion.Nutrition;
 import com.example.demo.model.UserReport.UserReport;
 
 import javax.persistence.*;
@@ -76,6 +77,17 @@ public class User {
 
     @OneToMany
     Set<Nutrition> nutritions=new HashSet<>();
+
+    @OneToMany
+    Set<NutrientsChecker> nutrientsCheckers=new HashSet<>();
+
+    public Set<NutrientsChecker> getNutrientsCheckers() {
+        return nutrientsCheckers;
+    }
+
+    public void setNutrientsCheckers(Set<NutrientsChecker> nutrientsCheckers) {
+        this.nutrientsCheckers = nutrientsCheckers;
+    }
 
     public Set<Nutrition> getNutritions() {
         return nutritions;

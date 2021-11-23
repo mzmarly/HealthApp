@@ -5,8 +5,6 @@ import com.example.demo.model.BasicUserDataInfo.BasicUserData;
 import com.example.demo.model.BasicUserDataInfo.PhysicalActivity;
 import com.example.demo.repository.BasicUserDataRepository;
 import com.example.demo.service.BasicUserDataService;
-import com.example.demo.service.NutritionService;
-import com.example.demo.webclient.NutritionClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,14 +20,10 @@ public class BasicUserDataController {
     @Autowired
     BasicUserDataService basicUserDataService;
 
-    @Autowired
-    NutritionClient nutritionClient;
 
     @Autowired
     BasicUserDataRepository basicUserDataRepository;
 
-    @Autowired
-    NutritionService nutritionService;
 
     @Autowired
     NutritionDataApiController nutritionDataApiController;
