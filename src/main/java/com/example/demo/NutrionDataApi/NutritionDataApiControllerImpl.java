@@ -155,8 +155,11 @@ public class NutritionDataApiControllerImpl implements NutritionDataApiControlle
     public UserReport getLastUserReport(String login) {
         var user = userRepository.findByLogin(login).orElseThrow();
         Set<UserReport> set = user.getUserReports();
-        UserReport[] userReportsArray = set.toArray(set.toArray(new UserReport[0]));
-        return userReportsArray[0];
-    }
+        if(set.isEmpty()){
+            return new UserReport();
+        }else{
+            UserReport[] userArray = set.toArray(set.toArray(new UserReport[0]));
+            return userArray[0];
+        }}
 
 }

@@ -71,24 +71,30 @@ public class DiseasesCheckerServiceImpl implements DiseasesCheckerService {
             userReport.setDiabetes(DiabetesLevel.HIGH_LEVEL);
         } else if (bloodSugarLevel >= 126) {
             userReport.setDiabetes(DiabetesLevel.POTENTIAL_DIABETES);
+        }else if(bloodSugarLevel<70){
+            userReport.setDiabetes(DiabetesLevel.HYPOGLYCEMIA);
         }
         userRepository.save(user);
     }
 
     @Override
-    public void checkBMI(String login) {
+    public double checkBMI(String login) {
         var user = userRepository.findByLogin(login).orElseThrow();
         UserReport userReport = getLastUserReport(login);
-        userReport.setBmi(bodyDimensionsService.calculateBMI(login));
+        double bmi=bodyDimensionsService.calculateBMI(login);
+        userReport.setBmi(bmi);
         userRepository.save(user);
+        return bmi;
     }
 
     @Override
-    public void checkWHR(String login) {
+    public double checkWHR(String login) {
         var user = userRepository.findByLogin(login).orElseThrow();
         UserReport userReport = getLastUserReport(login);
-        userReport.setWhr(bodyDimensionsService.calculateWHR(login));
+        double whr=bodyDimensionsService.calculateWHR(login);
+        userReport.setWhr(whr);
         userRepository.save(user);
+        return whr;
     }
 
     public List<MonitoredHealthParameters> getListMonitoredHealthParametersForUser(String login) {
@@ -107,7 +113,10 @@ public class DiseasesCheckerServiceImpl implements DiseasesCheckerService {
     public UserReport getLastUserReport(String login) {
         var user = userRepository.findByLogin(login).orElseThrow();
         Set<UserReport> set = user.getUserReports();
+        if(set.isEmpty()){
+            return new UserReport();
+        }else{
         UserReport[] userArray = set.toArray(set.toArray(new UserReport[0]));
         return userArray[0];
-    }
+    }}
 }

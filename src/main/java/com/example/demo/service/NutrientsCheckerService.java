@@ -1,6 +1,8 @@
 package com.example.demo.service;
 
+import com.example.demo.model.NutrientsChecker.NutrientsChecker;
+
 public interface NutrientsCheckerService {
 
-    void setStateFotNutrientsChecker(String login);
+    NutrientsChecker setStateFotNutrientsChecker(String login);
 }

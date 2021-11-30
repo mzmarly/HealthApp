@@ -29,66 +29,73 @@ public class NutrientsCheckerServiceImpl implements NutrientsCheckerService {
     UserRepository userRepository;
 
     @Autowired
-    BodyDimensionsRepository bodyDimensionsRepository;
-
-    @Autowired
     NutrientsCheckerRepository nutrientsCheckerRepository;
 
-    @Autowired
-    DailyNutritionReportRepository dailyNutritionReportRepository;
-
     @Override
-    public void setStateFotNutrientsChecker(String login) {
+    public NutrientsChecker setStateFotNutrientsChecker(String login) {
         var user = userRepository.findByLogin(login).orElseThrow();
-        NutrientsChecker nutrientsChecker = new NutrientsChecker();
-        DailyNutritionReport dailyNutritionReport = getDailyNutritionReports(login);
-        setStateForCalories(nutrientsChecker, dailyNutritionReport, user);
-        setStateForProteins(nutrientsChecker, dailyNutritionReport, user);
-        setStateForFats(nutrientsChecker, dailyNutritionReport, user);
-        setStateForCholesterol(nutrientsChecker, dailyNutritionReport, user);
-
-
+        NutrientsChecker nutrientsChecker = setStateForNutrientsChecker(user);
+        System.out.println(nutrientsChecker.toString());
+        nutrientsCheckerRepository.save(nutrientsChecker);
+        Set<NutrientsChecker> nutrientsCheckerSet=user.getNutrientsCheckers();
+        nutrientsCheckerSet.add(nutrientsChecker);
+        user.setNutrientsCheckers(nutrientsCheckerSet);
+        user.getNutrientsCheckers().add(nutrientsChecker);
+        userRepository.save(user);
+        return nutrientsChecker;
     }
 
-    void setStateForCalories(NutrientsChecker nutrientsChecker, DailyNutritionReport dailyNutritionReport, User user) {
+    NutrientsChecker setStateForNutrientsChecker(User user){
+        long size=nutrientsCheckerRepository.findAll().size();
+        DailyNutritionReport dailyNutritionReport = getDailyNutritionReports(user.getLogin());
+
+        return new NutrientsChecker(size,
+                setStateForCalories(dailyNutritionReport,user),
+                setStateForProteins(dailyNutritionReport,user),
+                setStateForFats(dailyNutritionReport,user),
+                setStateForCholesterol(dailyNutritionReport,user),
+                setStateForCarbohydrates(dailyNutritionReport,user)
+        );
+    }
+    NutrientsState setStateForCalories(DailyNutritionReport dailyNutritionReport, User user) {
         if (dailyNutritionReport.getCalories() < caloriesChecker(user) * 0.9) {
-            nutrientsChecker.setCaloriesState(NutrientsState.TOO_LOW);
+           return  NutrientsState.TOO_LOW;
         } else if (dailyNutritionReport.getCalories() < caloriesChecker(user) * 1.2) {
-            nutrientsChecker.setCaloriesState(NutrientsState.CORRECT);
-        } else nutrientsChecker.setCaloriesState(NutrientsState.TOO_HIGH);
+            return NutrientsState.CORRECT;
+        } else return NutrientsState.TOO_HIGH;
     }
 
-    void setStateForProteins(NutrientsChecker nutrientsChecker, DailyNutritionReport dailyNutritionReport, User user) {
+    NutrientsState setStateForProteins(DailyNutritionReport dailyNutritionReport, User user) {
         if (dailyNutritionReport.getDailyProtein_g() < proteinChecker(user) * 0.8) {
-            nutrientsChecker.setCaloriesState(NutrientsState.TOO_LOW);
+            return NutrientsState.TOO_LOW;
         } else if (dailyNutritionReport.getDailyProtein_g() < proteinChecker(user) * 1.2) {
-            nutrientsChecker.setCaloriesState(NutrientsState.CORRECT);
+            return NutrientsState.CORRECT;
         } else
-            nutrientsChecker.setCaloriesState(NutrientsState.TOO_HIGH);
+            return NutrientsState.TOO_HIGH;
     }
-    void setStateForFats(NutrientsChecker nutrientsChecker, DailyNutritionReport dailyNutritionReport, User user) {
+    NutrientsState setStateForFats(DailyNutritionReport dailyNutritionReport, User user) {
         if (dailyNutritionReport.getDailyFat_total_g() < fatChecker(user) * 0.8) {
-            nutrientsChecker.setFatsState(NutrientsState.TOO_LOW);
+            return NutrientsState.TOO_LOW;
         } else if (dailyNutritionReport.getDailyProtein_g() < fatChecker(user) * 1.2) {
-            nutrientsChecker.setFatsState(NutrientsState.CORRECT);
+            return NutrientsState.CORRECT;
         } else
-            nutrientsChecker.setFatsState(NutrientsState.TOO_HIGH);
+            return NutrientsState.TOO_HIGH;
     }
-    void setStateForCholesterol(NutrientsChecker nutrientsChecker, DailyNutritionReport dailyNutritionReport, User user) {
+    NutrientsState setStateForCholesterol(DailyNutritionReport dailyNutritionReport, User user) {
         if (dailyNutritionReport.getDailyFat_total_g() < cholesterolChecker(user) * 0.8) {
-            nutrientsChecker.setFatsState(NutrientsState.TOO_LOW);
+            return NutrientsState.TOO_LOW;
         } else if (dailyNutritionReport.getDailyProtein_g() < cholesterolChecker(user) * 1.2) {
-            nutrientsChecker.setFatsState(NutrientsState.CORRECT);
+            return NutrientsState.CORRECT;
         } else
-            nutrientsChecker.setFatsState(NutrientsState.TOO_HIGH);
+            return NutrientsState.TOO_HIGH;
     }
-    void setStateForCarbohydratesC(NutrientsChecker nutrientsChecker, DailyNutritionReport dailyNutritionReport, User user) {
+    NutrientsState setStateForCarbohydrates(DailyNutritionReport dailyNutritionReport, User user) {
         if (dailyNutritionReport.getDailyFat_total_g() < carbohydratesChecker(user) * 0.8) {
-            nutrientsChecker.setFatsState(NutrientsState.TOO_LOW);
+            return NutrientsState.TOO_LOW;
         } else if (dailyNutritionReport.getDailyProtein_g() < carbohydratesChecker(user) * 1.2) {
-            nutrientsChecker.setFatsState(NutrientsState.CORRECT);
+            return NutrientsState.CORRECT;
         } else
-            nutrientsChecker.setFatsState(NutrientsState.TOO_HIGH);
+            return NutrientsState.TOO_HIGH;
     }
 
 

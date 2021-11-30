@@ -16,6 +16,5 @@ public interface BodyDimensionsService {
 
     double calculateBMI(String login);
 
-
     double getAverageByMonth(String login, String month);
 }

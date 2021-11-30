@@ -6,6 +6,7 @@ import com.example.demo.model.BasicUserDataInfo.Sex;
 import com.example.demo.repository.BasicUserDataRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.BasicUserDataService;
+import com.example.demo.service.diseasesChecker.DiseasesCheckerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +20,6 @@ public class BasicUserDataServiceImpl implements BasicUserDataService {
 
     @Autowired
     UserRepository userRepository;
-
 
     @Override
     public BasicUserData create(BasicUserData basicUserData) {
