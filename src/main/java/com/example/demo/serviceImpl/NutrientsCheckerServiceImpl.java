@@ -9,8 +9,6 @@ import com.example.demo.model.NutrientsChecker.NutrientsState;
 import com.example.demo.model.User;
 import com.example.demo.model.UserReport.DailyNutritionReport;
 import com.example.demo.model.UserReport.UserReport;
-import com.example.demo.repository.BodyDimensionsRepository;
-import com.example.demo.repository.DailyNutritionReportRepository;
 import com.example.demo.repository.NutrientsCheckerRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.NutrientsCheckerService;
@@ -37,7 +35,7 @@ public class NutrientsCheckerServiceImpl implements NutrientsCheckerService {
         NutrientsChecker nutrientsChecker = setStateForNutrientsChecker(user);
         System.out.println(nutrientsChecker.toString());
         nutrientsCheckerRepository.save(nutrientsChecker);
-        Set<NutrientsChecker> nutrientsCheckerSet=user.getNutrientsCheckers();
+        Set<NutrientsChecker> nutrientsCheckerSet = user.getNutrientsCheckers();
         nutrientsCheckerSet.add(nutrientsChecker);
         user.setNutrientsCheckers(nutrientsCheckerSet);
         user.getNutrientsCheckers().add(nutrientsChecker);
@@ -45,21 +43,27 @@ public class NutrientsCheckerServiceImpl implements NutrientsCheckerService {
         return nutrientsChecker;
     }
 
-    NutrientsChecker setStateForNutrientsChecker(User user){
-        long size=nutrientsCheckerRepository.findAll().size();
+    @Override
+    public Iterable<NutrientsChecker> getAllNutrientsChecker() {
+        return nutrientsCheckerRepository.findAll();
+    }
+
+    NutrientsChecker setStateForNutrientsChecker(User user) {
+        long size = nutrientsCheckerRepository.findAll().size();
         DailyNutritionReport dailyNutritionReport = getDailyNutritionReports(user.getLogin());
 
         return new NutrientsChecker(size,
-                setStateForCalories(dailyNutritionReport,user),
-                setStateForProteins(dailyNutritionReport,user),
-                setStateForFats(dailyNutritionReport,user),
-                setStateForCholesterol(dailyNutritionReport,user),
-                setStateForCarbohydrates(dailyNutritionReport,user)
+                setStateForCalories(dailyNutritionReport, user),
+                setStateForProteins(dailyNutritionReport, user),
+                setStateForFats(dailyNutritionReport, user),
+                setStateForCholesterol(dailyNutritionReport, user),
+                setStateForCarbohydrates(dailyNutritionReport, user)
         );
     }
+
     NutrientsState setStateForCalories(DailyNutritionReport dailyNutritionReport, User user) {
         if (dailyNutritionReport.getCalories() < caloriesChecker(user) * 0.9) {
-           return  NutrientsState.TOO_LOW;
+            return NutrientsState.TOO_LOW;
         } else if (dailyNutritionReport.getCalories() < caloriesChecker(user) * 1.2) {
             return NutrientsState.CORRECT;
         } else return NutrientsState.TOO_HIGH;
@@ -73,6 +77,7 @@ public class NutrientsCheckerServiceImpl implements NutrientsCheckerService {
         } else
             return NutrientsState.TOO_HIGH;
     }
+
     NutrientsState setStateForFats(DailyNutritionReport dailyNutritionReport, User user) {
         if (dailyNutritionReport.getDailyFat_total_g() < fatChecker(user) * 0.8) {
             return NutrientsState.TOO_LOW;
@@ -81,6 +86,7 @@ public class NutrientsCheckerServiceImpl implements NutrientsCheckerService {
         } else
             return NutrientsState.TOO_HIGH;
     }
+
     NutrientsState setStateForCholesterol(DailyNutritionReport dailyNutritionReport, User user) {
         if (dailyNutritionReport.getDailyFat_total_g() < cholesterolChecker(user) * 0.8) {
             return NutrientsState.TOO_LOW;
@@ -89,6 +95,7 @@ public class NutrientsCheckerServiceImpl implements NutrientsCheckerService {
         } else
             return NutrientsState.TOO_HIGH;
     }
+
     NutrientsState setStateForCarbohydrates(DailyNutritionReport dailyNutritionReport, User user) {
         if (dailyNutritionReport.getDailyFat_total_g() < carbohydratesChecker(user) * 0.8) {
             return NutrientsState.TOO_LOW;

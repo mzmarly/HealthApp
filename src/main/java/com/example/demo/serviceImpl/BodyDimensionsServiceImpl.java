@@ -97,6 +97,11 @@ public class BodyDimensionsServiceImpl implements BodyDimensionsService {
         return sum / counter;
     }
 
+    @Override
+    public Iterable<BodyDimensions> getAllBodyDimensions() {
+        return bodyDimensionsRepository.findAll();
+    }
+
     public List<BodyDimensions> getBodyDimensionsListForUser(String login) {
         var user = userRepository.findByLogin(login).orElseThrow();
         List<BodyDimensions> bodyDimensionsList = new ArrayList<>();

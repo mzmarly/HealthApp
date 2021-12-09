@@ -13,4 +13,6 @@ public interface BasicUserDataService {
     void updateBasicUserDataPhysicalActivity(String login, PhysicalActivity physicalActivity);
 
     void removeBasicUserData(Long id);
+
+    Iterable<BasicUserData> getIAllUserData();
 }

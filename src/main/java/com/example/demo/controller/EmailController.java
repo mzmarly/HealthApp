@@ -1,15 +1,15 @@
 package com.example.demo.controller;
 
 import com.example.demo.MailSender.EmailSender;
-import lombok.extern.flogger.Flogger;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
+
+import java.time.LocalDate;
 
 @Controller
 @Slf4j
@@ -27,11 +27,12 @@ public class EmailController {
     public String send() {
         try {
             Context context = new Context();
-            context.setVariable("header", "Nowy artykuł na CodeCouple");
-            context.setVariable("title", "#8 Spring Boot – email - szablon i wysyłanie");
+            LocalDate date= LocalDate.now();
+            context.setVariable("header", "Your daily health report");
+            context.setVariable("title", "" + date);
             context.setVariable("description", "Tutaj jakis opis...");
             String body = templateEngine.process("template", context);
-            emailSender.sendEmail("michalzma@gmail.com", "CodeCouple Newsletter", body);
+            emailSender.sendEmail("michalzma@gmail.com", "Health report", body);
         }
         catch (MailException e){
             log.info("asaaasasaasasasasasasa "+e.getMessage());

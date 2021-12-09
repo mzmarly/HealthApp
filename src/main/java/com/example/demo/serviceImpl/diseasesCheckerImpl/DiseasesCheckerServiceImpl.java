@@ -5,7 +5,6 @@ import com.example.demo.model.UserReport.UserReport;
 import com.example.demo.model.UserReport.HypertensionLevel;
 import com.example.demo.model.MonitoredHealthParametersInfo.MonitoredHealthParameters;
 import com.example.demo.repository.MonitoredHealthParametersRepository;
-import com.example.demo.repository.UserReportRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.BodyDimensionsService;
 import com.example.demo.service.diseasesChecker.DiseasesCheckerService;
@@ -25,9 +24,6 @@ public class DiseasesCheckerServiceImpl implements DiseasesCheckerService {
 
     @Autowired
     UserRepository userRepository;
-
-    @Autowired
-    UserReportRepository userReportRepository;
 
     @Autowired
     BodyDimensionsService bodyDimensionsService;

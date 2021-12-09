@@ -1,7 +1,6 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.MonitoredHealthParametersInfo.MonitoredHealthParameters;
-import com.example.demo.repository.MonitoredHealthParametersRepository;
 import com.example.demo.service.MonitoredHealthParametersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,12 +14,9 @@ public class MonitoredHealthParametersController {
     @Autowired
     MonitoredHealthParametersService monitoredHealthParametersService;
 
-    @Autowired
-    MonitoredHealthParametersRepository monitoredHealthParametersRepository;
-
     @GetMapping("/monitoredHealthParameters")
     public Iterable<MonitoredHealthParameters> getInfo() {
-        return monitoredHealthParametersRepository.findAll();
+        return monitoredHealthParametersService.getIAllMonitoredHealthParameters();
     }
 
     @PostMapping("/monitoredHealthParameters/{login}")
@@ -29,4 +25,10 @@ public class MonitoredHealthParametersController {
         return new ResponseEntity<MonitoredHealthParameters>(HttpStatus.OK);
 
     }
-}
+
+    @DeleteMapping("/removeBasicUserData/{id}")
+    public ResponseEntity<HttpStatus> removeRating(@PathVariable(value = "id") long id) {
+        monitoredHealthParametersService.removeMonitoredHealthParameter(id);
+        return new ResponseEntity<HttpStatus>(HttpStatus.ACCEPTED);
+    }
+}//MonitoredHealthParameters

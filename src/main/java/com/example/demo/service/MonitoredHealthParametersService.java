@@ -8,5 +8,7 @@ public interface MonitoredHealthParametersService {
 
     MonitoredHealthParameters addMonitoredHealthParameters(String login,  int systolicPressure, int diaSystolicPressure, int bloodSugarLevel);
 
-    void MonitoredHealthParameters(Long id);
+    void removeMonitoredHealthParameter(Long id);
+
+    Iterable<MonitoredHealthParameters> getIAllMonitoredHealthParameters();
 }

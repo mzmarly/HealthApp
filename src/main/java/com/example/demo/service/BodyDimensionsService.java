@@ -2,7 +2,6 @@ package com.example.demo.service;
 
 import com.example.demo.model.BodyDimensionsInfo.BodyDimensions;
 
-
 public interface BodyDimensionsService {
     BodyDimensions create(BodyDimensions bodyDimensions);
 
@@ -17,4 +16,6 @@ public interface BodyDimensionsService {
     double calculateBMI(String login);
 
     double getAverageByMonth(String login, String month);
+
+    Iterable<BodyDimensions> getAllBodyDimensions();
 }

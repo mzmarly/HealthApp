@@ -67,6 +67,9 @@ public class User {
     Set<BasicUserData> basicUserData =new HashSet<>();
 
     @OneToMany
+    Set<DailyStars> dailyStars =new HashSet<>();
+
+    @OneToMany
     Set<BodyDimensions> bodyDimensionsons =new HashSet<>();
 
     @OneToMany

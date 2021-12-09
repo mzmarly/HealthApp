@@ -8,4 +8,5 @@ public interface UserReportService {
 
     UserReport addUserReport(String login, HypertensionLevel hypertensionLevel, DiabetesLevel diabetesLevel);
 
+    Iterable<UserReport> getUserReports();
 }

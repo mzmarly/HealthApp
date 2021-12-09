@@ -29,9 +29,9 @@ public class MonitoredHealthParametersServiceImpl implements MonitoredHealthPara
         LocalDate date = LocalDate.now();
         long basicMonitoredHealthParametersId = monitoredHealthParametersRepository.findAll().size();
         var user = userRepository.findByLogin(login).orElseThrow();
-        MonitoredHealthParameters monitoredHealthParameters = new MonitoredHealthParameters(basicMonitoredHealthParametersId,date, systolicPressure, diaSystolicPressure,bloodSugarLevel);
+        MonitoredHealthParameters monitoredHealthParameters = new MonitoredHealthParameters(basicMonitoredHealthParametersId, date, systolicPressure, diaSystolicPressure, bloodSugarLevel);
         monitoredHealthParametersRepository.save(monitoredHealthParameters);
-        Set<MonitoredHealthParameters> monitoredHealthParametersSet=user.getMonitoredHealthParameters();
+        Set<MonitoredHealthParameters> monitoredHealthParametersSet = user.getMonitoredHealthParameters();
         monitoredHealthParametersSet.add(monitoredHealthParameters);
         user.setMonitoredHealthParameters(monitoredHealthParametersSet);
         user.getMonitoredHealthParameters().add(monitoredHealthParameters);
@@ -40,7 +40,13 @@ public class MonitoredHealthParametersServiceImpl implements MonitoredHealthPara
     }
 
     @Override
-    public void MonitoredHealthParameters(Long id) {monitoredHealthParametersRepository.deleteById(id);
+    public void removeMonitoredHealthParameter(Long id) {
+        monitoredHealthParametersRepository.deleteById(id);
 
+    }
+
+    @Override
+    public Iterable<MonitoredHealthParameters> getIAllMonitoredHealthParameters() {
+        return monitoredHealthParametersRepository.findAll();
     }
 }

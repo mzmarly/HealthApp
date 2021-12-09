@@ -1,9 +1,8 @@
 package com.example.demo.controller;
 
-import com.example.demo.NutrionDataApi.NutritionDataApiController;
+import com.example.demo.NutrionDataApi.NutritionDataApi;
 import com.example.demo.model.UserReport.DailyNutritionReport;
 import com.example.demo.model.UserReport.UserReport;
-import com.example.demo.repository.UserReportRepository;
 import com.example.demo.service.UserReportService;
 import com.example.demo.service.diseasesChecker.DiseasesCheckerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,20 +15,17 @@ import org.springframework.web.bind.annotation.*;
 public class UserReportController {
 
     @Autowired
-    UserReportRepository userReportRepository;
-
-    @Autowired
     DiseasesCheckerService diseasesCheckerService;
 
     @Autowired
     UserReportService userReportService;
 
     @Autowired
-    NutritionDataApiController nutritionDataApiController;
+    NutritionDataApi nutritionDataApi;
 
     @GetMapping("/userReport")
     public Iterable<UserReport> getInfo (){
-        return userReportRepository.findAll();
+     return userReportService.getUserReports();
     }
 
     @PostMapping("/userReport/{login}")
@@ -39,7 +35,7 @@ public class UserReportController {
     }
     @PostMapping("/sumUpNutrition/{login}")
     public ResponseEntity<DailyNutritionReport> sumUpNutrition(@PathVariable String login){
-        nutritionDataApiController.addSumUpNutrition(login);
+        nutritionDataApi.addSumUpNutrition(login);
         return new ResponseEntity<DailyNutritionReport>(HttpStatus.OK);
     }
 
@@ -51,5 +47,4 @@ public class UserReportController {
         diseasesCheckerService.checkWHR(login);
         return new ResponseEntity<UserReport>(HttpStatus.OK);
     }
-
 }

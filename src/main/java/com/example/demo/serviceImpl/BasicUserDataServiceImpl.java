@@ -6,7 +6,6 @@ import com.example.demo.model.BasicUserDataInfo.Sex;
 import com.example.demo.repository.BasicUserDataRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.BasicUserDataService;
-import com.example.demo.service.diseasesChecker.DiseasesCheckerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -52,6 +51,11 @@ public class BasicUserDataServiceImpl implements BasicUserDataService {
     @Override
     public void removeBasicUserData(Long id) {
         basicUserDataRepository.deleteById(id);
+    }
+
+    @Override
+    public Iterable<BasicUserData> getIAllUserData(){
+        return basicUserDataRepository.findAll();
     }
 
 }

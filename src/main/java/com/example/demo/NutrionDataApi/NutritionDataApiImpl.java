@@ -21,10 +21,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-
 @Service
 @Slf4j
-public class NutritionDataApiControllerImpl implements NutritionDataApiController {
+public class NutritionDataApiImpl implements NutritionDataApi {
 
     @Autowired
     NutritionDataRepository nutritionDataRepository;
@@ -155,11 +154,11 @@ public class NutritionDataApiControllerImpl implements NutritionDataApiControlle
     public UserReport getLastUserReport(String login) {
         var user = userRepository.findByLogin(login).orElseThrow();
         Set<UserReport> set = user.getUserReports();
-        if(set.isEmpty()){
+        if (set.isEmpty()) {
             return new UserReport();
-        }else{
+        } else {
             UserReport[] userArray = set.toArray(set.toArray(new UserReport[0]));
             return userArray[0];
-        }}
-
+        }
+    }
 }

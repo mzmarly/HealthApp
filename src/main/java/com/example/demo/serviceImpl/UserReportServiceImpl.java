@@ -42,4 +42,9 @@ public class UserReportServiceImpl implements UserReportService {
         userRepository.save(user);
         return userReport;
     }
+
+    @Override
+    public Iterable<UserReport> getUserReports() {
+        return userReportRepository.findAll();
+    }
 }

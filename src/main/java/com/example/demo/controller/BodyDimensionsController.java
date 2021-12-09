@@ -1,11 +1,7 @@
 package com.example.demo.controller;
 
-
 import com.example.demo.model.BodyDimensionsInfo.BodyDimensions;
-import com.example.demo.repository.BodyDimensionsRepository;
-import com.example.demo.service.BasicUserDataService;
 import com.example.demo.service.BodyDimensionsService;
-import com.example.demo.service.diseasesChecker.DiseasesCheckerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,22 +14,14 @@ public class BodyDimensionsController {
     @Autowired
     BodyDimensionsService bodyDimensionsService;
 
-    @Autowired
-    BodyDimensionsRepository bodyDimensionsRepository;
-
-    @Autowired
-    BasicUserDataService basicUserDataService;
-@Autowired
-DiseasesCheckerService diseasesCheckerService;
-
     @GetMapping("/bodyDimensions")
     public Iterable<BodyDimensions> getInfo() {
-        return bodyDimensionsRepository.findAll();
+        return bodyDimensionsService.getAllBodyDimensions();
     }
 
     @PostMapping("/bodyDimensions/{login}")
     public ResponseEntity<BodyDimensions> addBasicUserData(@RequestBody BodyDimensions bodyDimensions, @PathVariable String login) {
-        bodyDimensionsService.addBodyDimensions(login, bodyDimensions.getShoulders(), bodyDimensions.getWaist(), bodyDimensions.getHips(),bodyDimensions.getWeight());
+        bodyDimensionsService.addBodyDimensions(login, bodyDimensions.getShoulders(), bodyDimensions.getWaist(), bodyDimensions.getHips(), bodyDimensions.getWeight());
         return new ResponseEntity<BodyDimensions>(HttpStatus.OK);
 
     }
@@ -43,5 +31,4 @@ DiseasesCheckerService diseasesCheckerService;
         bodyDimensionsService.removeBodyDimensions(id);
         return new ResponseEntity<HttpStatus>(HttpStatus.ACCEPTED);
     }
-
 }
