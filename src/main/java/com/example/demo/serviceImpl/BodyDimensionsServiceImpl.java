@@ -25,11 +25,11 @@ public class BodyDimensionsServiceImpl implements BodyDimensionsService {
     }
 
     @Override
-    public BodyDimensions addBodyDimensions(String login, double shoulders, double waist, double hips,double weight) {
+    public BodyDimensions addBodyDimensions(String login, double shoulders, double waist, double hips, double weight) {
         LocalDate date = LocalDate.now();
         long bodyDimensionsId = bodyDimensionsRepository.findAll().size();
         var user = userRepository.findByLogin(login).orElseThrow();
-        BodyDimensions bodyDimensions = new BodyDimensions(bodyDimensionsId, date, shoulders, waist, hips,weight);
+        BodyDimensions bodyDimensions = new BodyDimensions(bodyDimensionsId, date, shoulders, waist, hips, weight);
         bodyDimensionsRepository.save(bodyDimensions);
         Set<BodyDimensions> bodyDimensionsSet = user.getBodyDimensionsons();
         bodyDimensionsSet.add(bodyDimensions);
@@ -42,7 +42,6 @@ public class BodyDimensionsServiceImpl implements BodyDimensionsService {
     @Override
     public void removeBodyDimensions(Long id) {
         bodyDimensionsRepository.deleteById(id);
-
     }
 
     @Override
@@ -68,19 +67,19 @@ public class BodyDimensionsServiceImpl implements BodyDimensionsService {
     @Override
     public double calculateWHR(String login) {
         List<BodyDimensions> bodyDimensionsList = getBodyDimensionsListForUser(login);
-        int size=bodyDimensionsList.size()-1;
-        return bodyDimensionsList.get(size).getWaist()/bodyDimensionsList.get(size).getHips();
+        int size = bodyDimensionsList.size() - 1;
+        return bodyDimensionsList.get(size).getWaist() / bodyDimensionsList.get(size).getHips();
     }
 
     @Override
     public double calculateBMI(String login) {
         List<BodyDimensions> bodyDimensionsList = getBodyDimensionsListForUser(login);
         var user = userRepository.findByLogin(login).orElseThrow();
-        int size=bodyDimensionsList.size()-1;
+        int size = bodyDimensionsList.size() - 1;
 
         double height = user.getBasicUserData().stream().findFirst().get().getHeight();
 
-        return bodyDimensionsList.get(size).getWeight()/Math.pow(height/100,2);
+        return bodyDimensionsList.get(size).getWeight() / Math.pow(height / 100, 2);
     }
 
     @Override
@@ -100,6 +99,35 @@ public class BodyDimensionsServiceImpl implements BodyDimensionsService {
     @Override
     public Iterable<BodyDimensions> getAllBodyDimensions() {
         return bodyDimensionsRepository.findAll();
+    }
+
+    @Override
+    public Iterable<BodyDimensions> getBodyDimensionsByLogin(String login) {
+        return getBodyDimensionsListForUser(login);
+    }
+
+    @Override
+    public Iterable<BodyDimensions> getBodyDimensionsByLoginAndDate(String login, int day, int month, int year) {
+        List<BodyDimensions> userList=getBodyDimensionsListForUser(login);
+        List<BodyDimensions> filterList = new ArrayList<>();
+        for(BodyDimensions dimensions:userList){
+            if(dimensions.getDate().getDayOfMonth()==day &&dimensions.getDate().getMonthValue()==month &&dimensions.getDate().getYear()==year){
+                filterList.add(dimensions);
+            }
+        }
+        return filterList;
+    }
+
+    @Override
+    public Iterable<BodyDimensions> getBodyDimensionsByLoginAndMonth(String login, int month) {
+        List<BodyDimensions> userList=getBodyDimensionsListForUser(login);
+        List<BodyDimensions> filterList = new ArrayList<>();
+        for(BodyDimensions dimensions:userList){
+            if(dimensions.getDate().getMonthValue()==month){
+                filterList.add(dimensions);
+            }
+        }
+        return filterList;
     }
 
     public List<BodyDimensions> getBodyDimensionsListForUser(String login) {

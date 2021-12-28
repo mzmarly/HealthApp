@@ -3,12 +3,16 @@ package com.example.demo.serviceImpl;
 import com.example.demo.model.BasicUserDataInfo.BasicUserData;
 import com.example.demo.model.BasicUserDataInfo.PhysicalActivity;
 import com.example.demo.model.BasicUserDataInfo.Sex;
+import com.example.demo.model.MonitoredHealthParametersInfo.MonitoredHealthParameters;
 import com.example.demo.repository.BasicUserDataRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.BasicUserDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -56,6 +60,20 @@ public class BasicUserDataServiceImpl implements BasicUserDataService {
     @Override
     public Iterable<BasicUserData> getIAllUserData(){
         return basicUserDataRepository.findAll();
+    }
+
+    @Override
+    public Iterable<BasicUserData> getUserDataByLogin(String login) {
+        var user = userRepository.findByLogin(login).orElseThrow();
+        List<BasicUserData> basicUserDataList = new ArrayList<>();
+        for (BasicUserData i : user.getBasicUserData()) {
+            basicUserDataList.add(i);
+        }
+        System.out.println(basicUserDataList.size());
+        Collections.sort(basicUserDataList);
+
+        return basicUserDataList;
+
     }
 
 }

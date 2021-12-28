@@ -116,3 +116,182 @@ public class DiseasesCheckerServiceImpl implements DiseasesCheckerService {
         return userArray[0];
     }}
 }
+/*
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    tools:context="com.example.healthappfinal.ui.UserDataSegment.UserDataActivity">
+
+
+    <Button
+        android:id="@+id/btn_userDataHelper"
+        android:layout_width="300dp"
+        android:layout_height="58dp"
+        android:layout_marginBottom="44dp"
+        android:backgroundTint="@color/design_default_color_secondary"
+        android:text="@string/modifyUserData_button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.855"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/healthApp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="50dp"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:text="@string/userData_button"
+        android:textColor="@color/white"
+        android:textSize="35sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="49dp" />
+
+
+    <TextView
+        android:id="@+id/age"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_margin="50dp"
+
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="60dp"
+        android:text="@string/txt_age"
+        android:textColor="@color/white"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/healthApp" />
+
+    <TextView
+        android:id="@+id/txt_age"
+        android:layout_width="219dp"
+        android:layout_height="48dp"
+        android:layout_marginBottom="12dp"
+        android:background="#30ffffff"
+        android:gravity="center"
+
+        android:text="@string/txt_age"
+        android:textColor="@color/white"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/height"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.26"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="TextContrastCheck" />
+
+    <TextView
+        android:id="@+id/height"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="50dp"
+
+        android:layout_marginBottom="48dp"
+        android:text="@string/txt_height"
+        android:textColor="@color/white"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/txt_height"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/txt_height"
+        android:layout_width="219dp"
+        android:layout_height="48dp"
+        android:background="#30ffffff"
+        android:gravity="center"
+        android:text="TextView"
+        android:textColor="@color/white"
+        android:textSize="28sp"
+        android:textStyle="bold"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.26"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.424"
+        tools:ignore="TextContrastCheck" />
+
+    <TextView
+        android:id="@+id/sex"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="50dp"
+
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="231dp"
+        android:text="@string/txt_sex"
+        android:textColor="@color/white"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/txt_sex"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/txt_sex"
+        android:layout_width="219dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginBottom="32dp"
+        android:background="#30ffffff"
+        android:gravity="center"
+        android:text="TextView"
+        android:textColor="@color/white"
+        android:textSize="28sp"
+        android:textStyle="bold"
+
+        app:layout_constraintBottom_toBottomOf="@+id/physicalActivity"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.013"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="TextContrastCheck" />
+
+    <TextView
+        android:id="@+id/physicalActivity"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="50dp"
+
+        android:layout_marginStart="232dp"
+        android:layout_marginEnd="364dp"
+        android:layout_marginBottom="48dp"
+        android:text="@string/txt_physicalActivity"
+
+        android:textColor="@color/white"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/txt_physicalActivity"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/txt_physicalActivity"
+        android:layout_width="219dp"
+        android:layout_height="48dp"
+        android:layout_marginBottom="228dp"
+        android:background="#30ffffff"
+        android:gravity="center"
+        android:text="TextView"
+        android:textColor="@color/white"
+        android:textSize="28sp"
+        android:textStyle="bold"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.26"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="TextContrastCheck" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+ */

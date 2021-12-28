@@ -24,8 +24,12 @@ public class UserReportController {
     NutritionDataApi nutritionDataApi;
 
     @GetMapping("/userReport")
-    public Iterable<UserReport> getInfo (){
+    public Iterable<UserReport> getUserReports (){
      return userReportService.getUserReports();
+    }
+    @GetMapping("/userReport/{login}")
+    public Iterable<UserReport> getUserReportsForUser (@PathVariable String login){
+     return userReportService.getUserReportsForUser(login);
     }
 
     @PostMapping("/userReport/{login}")

@@ -4,17 +4,21 @@ import com.example.demo.model.BasicUserDataInfo.BasicUserData;
 import com.example.demo.model.BasicUserDataInfo.PhysicalActivity;
 import com.example.demo.model.BasicUserDataInfo.Sex;
 import com.example.demo.model.BodyDimensionsInfo.BodyDimensions;
+import com.example.demo.model.MonitoredHealthParametersInfo.MonitoredHealthParameters;
 import com.example.demo.model.NutrientsChecker.NutrientsChecker;
+import com.example.demo.model.NutrientsChecker.NutrientsPreconditions;
 import com.example.demo.model.NutrientsChecker.NutrientsState;
 import com.example.demo.model.User;
 import com.example.demo.model.UserReport.DailyNutritionReport;
 import com.example.demo.model.UserReport.UserReport;
 import com.example.demo.repository.NutrientsCheckerRepository;
+import com.example.demo.repository.NutrientsPreconditionsRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.NutrientsCheckerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -28,6 +32,9 @@ public class NutrientsCheckerServiceImpl implements NutrientsCheckerService {
 
     @Autowired
     NutrientsCheckerRepository nutrientsCheckerRepository;
+
+    @Autowired
+    NutrientsPreconditionsRepository nutrientsPreconditionsRepository;
 
     @Override
     public NutrientsChecker setStateFotNutrientsChecker(String login) {
@@ -48,11 +55,59 @@ public class NutrientsCheckerServiceImpl implements NutrientsCheckerService {
         return nutrientsCheckerRepository.findAll();
     }
 
+    @Override
+    public Iterable<NutrientsChecker> getNutrientsCheckerByLogin(String login) {
+        var user = userRepository.findByLogin(login).orElseThrow();
+        List<NutrientsChecker> nutrientsCheckerList = new ArrayList<>();
+        for (NutrientsChecker i : user.getNutrientsCheckers()) {
+            System.out.println("ID" + i.getNutrientsCheckerId());
+            nutrientsCheckerList.add(i);
+        }
+        System.out.println(nutrientsCheckerList.size());
+        Collections.sort(nutrientsCheckerList);
+
+        return nutrientsCheckerList;
+    }
+
+    @Override
+    public NutrientsPreconditions addNutrientsPreconditions(String login) {
+        var user = userRepository.findByLogin(login).orElseThrow();
+        long NutrientsPreconditionsId = user.getNutrientsPreconditions().size();
+        LocalDate date = LocalDate.now();
+        NutrientsPreconditions nutrientsPreconditions=new NutrientsPreconditions(NutrientsPreconditionsId,
+                date,
+                caloriesChecker(user),
+                proteinChecker(user),
+                fatChecker(user),
+                cholesterolChecker(user),
+                carbohydratesChecker(user)
+                );
+        nutrientsPreconditionsRepository.save(nutrientsPreconditions);
+        Set<NutrientsPreconditions> nutrientsPreconditionsSet = user.getNutrientsPreconditions();
+        nutrientsPreconditionsSet.add(nutrientsPreconditions);
+        user.setNutrientsPreconditions(nutrientsPreconditionsSet);
+        user.getNutrientsPreconditions().add(nutrientsPreconditions);
+        userRepository.save(user);
+        return nutrientsPreconditions;
+    }
+
+    @Override
+    public Iterable<NutrientsPreconditions> getNutrientsPreconditionsListByLogin(String login) {
+        var user = userRepository.findByLogin(login).orElseThrow();
+        List<NutrientsPreconditions> nutrientsPreconditionsList = new ArrayList<>();
+        for (NutrientsPreconditions i : user.getNutrientsPreconditions()) {
+            nutrientsPreconditionsList.add(i);
+        }
+        Collections.sort(nutrientsPreconditionsList);
+        return nutrientsPreconditionsList;
+    }
+
     NutrientsChecker setStateForNutrientsChecker(User user) {
         long size = nutrientsCheckerRepository.findAll().size();
         DailyNutritionReport dailyNutritionReport = getDailyNutritionReports(user.getLogin());
+        LocalDate date = LocalDate.now();
 
-        return new NutrientsChecker(size,
+        return new NutrientsChecker(size,date,
                 setStateForCalories(dailyNutritionReport, user),
                 setStateForProteins(dailyNutritionReport, user),
                 setStateForFats(dailyNutritionReport, user),
@@ -146,7 +201,7 @@ public class NutrientsCheckerServiceImpl implements NutrientsCheckerService {
     }
 
     double carbohydratesChecker(User user) {
-        return caloriesChecker(user) * 2; //
+        return (caloriesChecker(user) * 0.55)/4; //polecane 55% węgli jeden to 4kcal
     }
 
     double femaleCaloriesChecker(BasicUserData basicUserData, BodyDimensions bodyDimensions) {

@@ -1,5 +1,6 @@
 package com.example.demo.serviceImpl;
 
+import com.example.demo.model.MonitoredHealthParametersInfo.MonitoredHealthParameters;
 import com.example.demo.model.UserReport.DiabetesLevel;
 import com.example.demo.model.UserReport.UserReport;
 import com.example.demo.model.UserReport.HypertensionLevel;
@@ -11,6 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -29,11 +33,11 @@ public class UserReportServiceImpl implements UserReportService {
     @Override
     public UserReport addUserReport(String login, HypertensionLevel hypertensionLevel, DiabetesLevel diabetesLevel) {
         var user = userRepository.findByLogin(login).orElseThrow();
-        long userReportId=userReportRepository.findAll().size();
-        double bmi= diseasesCheckerService.checkBMI(login);
+        long userReportId = userReportRepository.findAll().size();
+        double bmi = diseasesCheckerService.checkBMI(login);
         diseasesCheckerService.checkBMI(login);
-        LocalDate date=LocalDate.now();
-        UserReport userReport= new UserReport(userReportId,date,hypertensionLevel,diabetesLevel,bmi,0.0);
+        LocalDate date = LocalDate.now();
+        UserReport userReport = new UserReport(userReportId, date, hypertensionLevel, diabetesLevel, bmi, 0.0);
         userReportRepository.save(userReport);
         Set<UserReport> userReportSet = user.getUserReports();
         userReportSet.add(userReport);
@@ -47,4 +51,16 @@ public class UserReportServiceImpl implements UserReportService {
     public Iterable<UserReport> getUserReports() {
         return userReportRepository.findAll();
     }
+
+    @Override
+    public Iterable<UserReport> getUserReportsForUser(String login) {
+        var user = userRepository.findByLogin(login).orElseThrow();
+        List<UserReport> userReportList = new ArrayList<>();
+        for (UserReport i : user.getUserReports()) {
+            userReportList.add(i);
+        }
+        Collections.sort(userReportList);
+        return userReportList;
+    }
 }
+

@@ -1,12 +1,13 @@
 package com.example.demo.model.BasicUserDataInfo;
 
+import com.example.demo.model.MonitoredHealthParametersInfo.MonitoredHealthParameters;
 import lombok.Data;
 import javax.persistence.*;
 
 @Entity
 @Table(name = "basicUserData")
 @Data
-public class BasicUserData {
+public class BasicUserData implements Comparable<BasicUserData> {
     @Id
     @Column(name = "basicUserData_id")
     private long basicUserDataId;
@@ -33,4 +34,8 @@ public class BasicUserData {
     @Column(name = "physicalActivity")
     private PhysicalActivity physicalActivity;
 
+    @Override
+    public int compareTo(BasicUserData o) {
+        return Long.compare(this.getBasicUserDataId(),o.getBasicUserDataId());
+    }
 }

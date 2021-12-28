@@ -4,6 +4,7 @@ import com.example.demo.model.BasicUserDataInfo.BasicUserData;
 import com.example.demo.model.BodyDimensionsInfo.BodyDimensions;
 import com.example.demo.model.MonitoredHealthParametersInfo.MonitoredHealthParameters;
 import com.example.demo.model.NutrientsChecker.NutrientsChecker;
+import com.example.demo.model.NutrientsChecker.NutrientsPreconditions;
 import com.example.demo.model.Nutrtion.Nutrition;
 import com.example.demo.model.UserReport.UserReport;
 
@@ -66,6 +67,14 @@ public class User {
     @OneToMany
     Set<BasicUserData> basicUserData =new HashSet<>();
 
+    public Set<DailyStars> getDailyStars() {
+        return dailyStars;
+    }
+
+    public void setDailyStars(Set<DailyStars> dailyStars) {
+        this.dailyStars = dailyStars;
+    }
+
     @OneToMany
     Set<DailyStars> dailyStars =new HashSet<>();
 
@@ -81,8 +90,19 @@ public class User {
     @OneToMany
     Set<Nutrition> nutritions=new HashSet<>();
 
+    public Set<NutrientsPreconditions> getNutrientsPreconditions() {
+        return nutrientsPreconditions;
+    }
+
+    public void setNutrientsPreconditions(Set<NutrientsPreconditions> nutrientsPreconditions) {
+        this.nutrientsPreconditions = nutrientsPreconditions;
+    }
+
     @OneToMany
     Set<NutrientsChecker> nutrientsCheckers=new HashSet<>();
+
+    @OneToMany
+    Set<NutrientsPreconditions> nutrientsPreconditions=new HashSet<>();
 
     public Set<NutrientsChecker> getNutrientsCheckers() {
         return nutrientsCheckers;

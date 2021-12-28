@@ -16,7 +16,7 @@ public class BasicUserDataController {
     BasicUserDataService basicUserDataService;
 
     @GetMapping("/basicUserData")
-    public Iterable<BasicUserData> getInfo() {
+    public Iterable<BasicUserData> getAllBasicUserData() {
         return basicUserDataService.getIAllUserData();
     }
 
@@ -26,6 +26,11 @@ public class BasicUserDataController {
         return new ResponseEntity<BasicUserData>(HttpStatus.OK);
     }
 
+    @GetMapping("/basicUserData/{login}")
+    public Iterable<BasicUserData> getMonitoredHealthParametersForUser(@PathVariable String login) {
+        return basicUserDataService.getUserDataByLogin(login);
+    }
+
     @PostMapping("/basicUserData/{login}/{physicalActivity}")
     public ResponseEntity<BasicUserData> updateBasicUserInfo(@PathVariable String login, @PathVariable PhysicalActivity physicalActivity) {
         basicUserDataService.updateBasicUserDataPhysicalActivity(login, physicalActivity);
@@ -33,7 +38,7 @@ public class BasicUserDataController {
     }
 
     @DeleteMapping("/removeBasicUserData/{id}")
-    public ResponseEntity<HttpStatus> removeRating(@PathVariable(value = "id") long id) {
+    public ResponseEntity<HttpStatus> removeBasicUserData(@PathVariable(value = "id") long id) {
         basicUserDataService.removeBasicUserData(id);
         return new ResponseEntity<HttpStatus>(HttpStatus.ACCEPTED);
     }

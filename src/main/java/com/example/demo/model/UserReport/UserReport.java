@@ -10,7 +10,7 @@ import java.util.Set;
 @Entity
 @Table(name = "userReport")
 @Data
-public class UserReport {
+public class UserReport implements Comparable<UserReport> {
     @Id
     @Column(name = "userReport_id")
     private long userReportId;
@@ -47,5 +47,10 @@ public class UserReport {
 
     public void setDailyNutritionReports(Set<DailyNutritionReport> dailyNutritionReports) {
         this.dailyNutritionReports = dailyNutritionReports;
+    }
+
+    @Override
+    public int compareTo(UserReport o) {
+        return Long.compare(this.getUserReportId(),o.getUserReportId());
     }
 }

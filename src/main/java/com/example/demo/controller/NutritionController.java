@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.NutrionDataApi.NutritionDataApi;
+import com.example.demo.model.NutrientsChecker.NutrientsChecker;
 import com.example.demo.model.Nutrtion.Nutrition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,5 +24,10 @@ public class NutritionController {
     @DeleteMapping("/food/{id}")
     public void removeBasicUserData(@PathVariable long id) {
         nutritionDataApi.removeFoodById(id);
+    }
+
+    @GetMapping("/food/{login}")
+    public Iterable<Nutrition> getNutritionForUser(@PathVariable String login) {
+        return nutritionDataApi.geNutritionByLogin(login);
     }
 }

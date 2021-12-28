@@ -1,5 +1,6 @@
 package com.example.demo.model.Nutrtion;
 
+import com.example.demo.model.NutrientsChecker.NutrientsChecker;
 import lombok.Builder;
 
 import javax.persistence.Column;
@@ -11,7 +12,7 @@ import java.time.LocalDate;
 @Entity
 //@Builder
 @Table(name = "nutritions")
-public class Nutrition {
+public class Nutrition implements Comparable<Nutrition> {
 
     @Id
     @Column(name = "nutrition_id")
@@ -34,9 +35,9 @@ public class Nutrition {
     @Column(name = "calories")
     private double calories;
 
-    public Nutrition(long nutritionId, LocalDate date,String nutritionName, double calories, double serving_size_g, double fat_total_g, double fat_saturated_g, double protein_g, double sodium_mg, double potassium_mg, double cholesterol_mg, double carbohydrates_total_g, double fiber_g, double sugar_g) {
+    public Nutrition(long nutritionId, LocalDate date, String nutritionName, double calories, double serving_size_g, double fat_total_g, double fat_saturated_g, double protein_g, double sodium_mg, double potassium_mg, double cholesterol_mg, double carbohydrates_total_g, double fiber_g, double sugar_g) {
         this.nutritionId = nutritionId;
-        this.date=date;
+        this.date = date;
         this.nutritionName = nutritionName;
         this.calories = calories;
         this.serving_size_g = serving_size_g;
@@ -187,4 +188,9 @@ public class Nutrition {
 
     @Column(name = "sugar_g")
     private double sugar_g;
+
+    @Override
+    public int compareTo(Nutrition o) {
+        return Long.compare(this.getNutritionId(), o.getNutritionId());
+    }
 }

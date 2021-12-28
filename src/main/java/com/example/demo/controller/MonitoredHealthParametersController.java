@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.model.BodyDimensionsInfo.BodyDimensions;
 import com.example.demo.model.MonitoredHealthParametersInfo.MonitoredHealthParameters;
 import com.example.demo.service.MonitoredHealthParametersService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,20 +16,31 @@ public class MonitoredHealthParametersController {
     MonitoredHealthParametersService monitoredHealthParametersService;
 
     @GetMapping("/monitoredHealthParameters")
-    public Iterable<MonitoredHealthParameters> getInfo() {
+    public Iterable<MonitoredHealthParameters> getIAllMonitoredHealthParameters() {
         return monitoredHealthParametersService.getIAllMonitoredHealthParameters();
     }
 
+    @GetMapping("/monitoredHealthParameters/{login}")
+    public Iterable<MonitoredHealthParameters> getMonitoredHealthParametersForUser( @PathVariable String login) {
+        return monitoredHealthParametersService.getMonitoredHealthParametersByLogin(login);
+    }
+    @GetMapping("/monitoredHealthParameters/{login}/{day}/{month}/{year}")
+    public Iterable<MonitoredHealthParameters> getMonitoredHealthParametersForUser(@PathVariable String login, @PathVariable int day, @PathVariable int month, @PathVariable int year) {
+        return monitoredHealthParametersService.getMonitoredHealthParametersByLoginAndDate(login,day,month,year);
+    }
+    @GetMapping("/monitoredHealthParameters/{login}/{month}")
+    public Iterable<MonitoredHealthParameters> getMonitoredHealthParametersForUserByMonth(@PathVariable String login,@PathVariable int month) {
+        return monitoredHealthParametersService.getMonitoredHealthParametersByLoginAndMonth(login,month);
+    }
     @PostMapping("/monitoredHealthParameters/{login}")
     public ResponseEntity<MonitoredHealthParameters> addMonitoredHealthParameters(@RequestBody MonitoredHealthParameters monitoredHealthParameters, @PathVariable String login) {
         monitoredHealthParametersService.addMonitoredHealthParameters(login, monitoredHealthParameters.getSystolicPressure(), monitoredHealthParameters.getDiaSystolicPressure(), monitoredHealthParameters.getBloodSugarLevel());
         return new ResponseEntity<MonitoredHealthParameters>(HttpStatus.OK);
-
     }
 
-    @DeleteMapping("/removeBasicUserData/{id}")
-    public ResponseEntity<HttpStatus> removeRating(@PathVariable(value = "id") long id) {
+    @DeleteMapping("/monitoredHealthParameters/{id}")
+    public ResponseEntity<HttpStatus> removeMonitoredHealthParameters(@PathVariable(value = "id") long id) {
         monitoredHealthParametersService.removeMonitoredHealthParameter(id);
         return new ResponseEntity<HttpStatus>(HttpStatus.ACCEPTED);
     }
-}//MonitoredHealthParameters
+}

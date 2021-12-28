@@ -1,5 +1,7 @@
 package com.example.demo.NutrionDataApi;
 
+import com.example.demo.model.MonitoredHealthParametersInfo.MonitoredHealthParameters;
+import com.example.demo.model.NutrientsChecker.NutrientsPreconditions;
 import com.example.demo.model.Nutrtion.Nutrition;
 import com.example.demo.model.Nutrtion.NutritionJSON;
 import com.example.demo.model.UserReport.DailyNutritionReport;
@@ -71,6 +73,7 @@ public class NutritionDataApiImpl implements NutritionDataApi {
     public DailyNutritionReport addSumUpNutrition(String login) {
         var userReport = getLastUserReport(login);
         long nutritionReportSize = dailyNutritionReportRepository.findAll().size();
+        LocalDate date = LocalDate.now();
         DailyNutritionReport dailyNutritionReport = new DailyNutritionReport();
         List<Nutrition> nutritionListByDay = getNutritionListForUser(login);
         if (!nutritionListByDay.isEmpty()) {
@@ -88,6 +91,7 @@ public class NutritionDataApiImpl implements NutritionDataApi {
                 dailyNutritionReport.setDailyServing_size_g(i.getServing_size_g() + dailyNutritionReport.getDailyServing_size_g());
             }
             dailyNutritionReport.setDailyNutritionReportId(nutritionReportSize);
+            dailyNutritionReport.setDate(date);
         }
         dailyNutritionReportRepository.save(dailyNutritionReport);
         Set<DailyNutritionReport> dailyNutritionReportSet = userReport.getDailyNutritionReports();
@@ -97,6 +101,31 @@ public class NutritionDataApiImpl implements NutritionDataApi {
         userReportRepository.save(userReport);
         return dailyNutritionReport;
     }
+
+    @Override
+    public DailyNutritionReport getDailySumUpByLogin(String login) {
+        return getDailyNutritionReports(login);
+    }
+
+    @Override
+    public Iterable<DailyNutritionReport> getDailySumUpListByLogin(String login) {
+//        var userReport = getLastUserReport(login);
+//        return userReport.getDailyNutritionReports();
+        return getDailyNutritionReportsList(login);
+    }
+
+    @Override
+    public Iterable<Nutrition> geNutritionByLogin(String login) {
+        var user = userRepository.findByLogin(login).orElseThrow();
+        List<Nutrition> nutritionList = new ArrayList<>();
+        for (Nutrition i : user.getNutritions()) {
+            nutritionList.add(i);
+        }
+        Collections.sort(nutritionList);
+
+        return nutritionList;
+    }
+
 
     public void JsonToObject(String login, String JSONBody, double portionWeight) {
         long nutritionId = nutritionDataRepository.findAll().size();
@@ -132,11 +161,13 @@ public class NutritionDataApiImpl implements NutritionDataApi {
 
     public List<Nutrition> getNutritionListForUser(String login) {
         var user = userRepository.findByLogin(login).orElseThrow();
+        boolean exist = false;
         LocalDate date = LocalDate.now();
         List<Nutrition> nutritionList = new ArrayList<>();
         for (Nutrition i : user.getNutritions()) {
             if (i.getDate().getDayOfMonth() == date.getDayOfMonth() && i.getDate().getMonthValue() == date.getMonthValue()) {
                 nutritionList.add(i);
+                exist = true;
             }
         }
         return nutritionList;
@@ -149,6 +180,15 @@ public class NutritionDataApiImpl implements NutritionDataApi {
         Collections.reverse(dailyNutritionReportsList);
         System.out.println(dailyNutritionReportsList.get(0).getDailyNutritionReportId());
         return dailyNutritionReportsList.get(0);
+    }
+
+    public List<DailyNutritionReport> getDailyNutritionReportsList(String login) {
+        var userReport = getLastUserReport(login);
+        List<DailyNutritionReport> dailyNutritionReportsList = new ArrayList<>(userReport.getDailyNutritionReports());
+        Collections.sort(dailyNutritionReportsList);
+        Collections.reverse(dailyNutritionReportsList);
+        System.out.println(dailyNutritionReportsList.get(0).getDailyNutritionReportId());
+        return dailyNutritionReportsList;
     }
 
     public UserReport getLastUserReport(String login) {

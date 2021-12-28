@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.model.BodyDimensionsInfo.BodyDimensions;
 import com.example.demo.model.MonitoredHealthParametersInfo.MonitoredHealthParameters;
 
 public interface MonitoredHealthParametersService {
@@ -11,4 +12,10 @@ public interface MonitoredHealthParametersService {
     void removeMonitoredHealthParameter(Long id);
 
     Iterable<MonitoredHealthParameters> getIAllMonitoredHealthParameters();
+
+    Iterable<MonitoredHealthParameters> getMonitoredHealthParametersByLogin(String login);
+
+    Iterable<MonitoredHealthParameters> getMonitoredHealthParametersByLoginAndDate(String login, int day, int month, int year);
+
+    Iterable<MonitoredHealthParameters> getMonitoredHealthParametersByLoginAndMonth(String login, int month);
 }

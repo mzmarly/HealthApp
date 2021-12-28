@@ -15,9 +15,29 @@ public class BodyDimensionsController {
     BodyDimensionsService bodyDimensionsService;
 
     @GetMapping("/bodyDimensions")
-    public Iterable<BodyDimensions> getInfo() {
+    public Iterable<BodyDimensions> getAllBodyDimensions() {
         return bodyDimensionsService.getAllBodyDimensions();
     }
+
+    @GetMapping("/bodyDimensions/{login}")
+    public Iterable<BodyDimensions> getBodyDimensionsForUser(@PathVariable String login) {
+        return bodyDimensionsService.getBodyDimensionsByLogin(login);
+    }
+
+    @GetMapping("/bodyDimensions/{login}/{day}/{month}/{year}")
+    public Iterable<BodyDimensions> getBodyDimensionsForUser(@PathVariable String login,@PathVariable int day,@PathVariable int month,@PathVariable int year) {
+        return bodyDimensionsService.getBodyDimensionsByLoginAndDate(login,day,month,year);
+    }
+    @GetMapping("/bodyDimensions/{login}/{month}")
+    public Iterable<BodyDimensions> getBodyDimensionsForUserByMonth(@PathVariable String login,@PathVariable int month) {
+        return bodyDimensionsService.getBodyDimensionsByLoginAndMonth(login,month);
+    }
+
+    @GetMapping("/bodyDimensions1/{login}")
+    public double[] getMinMaxParams(@PathVariable String login) {
+        return bodyDimensionsService.getMinMaxParams(login);
+    }
+
 
     @PostMapping("/bodyDimensions/{login}")
     public ResponseEntity<BodyDimensions> addBasicUserData(@RequestBody BodyDimensions bodyDimensions, @PathVariable String login) {
@@ -27,7 +47,7 @@ public class BodyDimensionsController {
     }
 
     @DeleteMapping("/removeBodyDimensions/{id}")
-    public ResponseEntity<HttpStatus> removeRating(@PathVariable(value = "id") long id) {
+    public ResponseEntity<HttpStatus> removeBasicUserData(@PathVariable(value = "id") long id) {
         bodyDimensionsService.removeBodyDimensions(id);
         return new ResponseEntity<HttpStatus>(HttpStatus.ACCEPTED);
     }
