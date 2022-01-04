@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.model.MonitoredHealthParametersInfo.MonitoredHealthParameters;
 import com.example.demo.model.NutrientsChecker.NutrientsChecker;
 import com.example.demo.model.NutrientsChecker.NutrientsPreconditions;
 
@@ -14,4 +15,7 @@ public interface NutrientsCheckerService {
     NutrientsPreconditions addNutrientsPreconditions(String login);
 
     Iterable<NutrientsPreconditions> getNutrientsPreconditionsListByLogin(String login);
+
+    Iterable<NutrientsPreconditions> getNutrientsPreconditionsListByLoginAndDate(String login, int day, int month, int year);
+
 }

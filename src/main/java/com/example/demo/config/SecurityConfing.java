@@ -91,7 +91,7 @@ class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .oauth2Login()
                 .loginPage("/oauth2/authorization/google")
-                .defaultSuccessUrl("http://localhost:3000/mainpage")
+                .defaultSuccessUrl("http://localhost:8000/a")
                 .failureUrl("/oauth2/authorization/google")
                 .permitAll()
                 .and()

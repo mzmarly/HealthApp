@@ -71,6 +71,7 @@ public class BasicUserDataServiceImpl implements BasicUserDataService {
         }
         System.out.println(basicUserDataList.size());
         Collections.sort(basicUserDataList);
+        Collections.reverse(basicUserDataList);
 
         return basicUserDataList;
 

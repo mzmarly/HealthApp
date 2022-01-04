@@ -19,6 +19,11 @@ public class DailyNutritionController {
         return nutritionDataApi.getDailySumUpListByLogin(login);
     }
 
+    @GetMapping("/dailyNutritionList/{login}/{day}/{month}/{year}")
+    public Iterable<DailyNutritionReport> getDailySumUpListByLoginAndDate(@PathVariable String login, @PathVariable int day, @PathVariable int month, @PathVariable int year) {
+        System.out.println("TESST");
+        return nutritionDataApi.getDailySumUpListByLoginAndDate(login,day,month,year);
+    }
     @GetMapping("/dailyNutrition/{login}")
     public DailyNutritionReport getDailySumUpByLogin(@PathVariable String login) {
         return nutritionDataApi.getDailySumUpByLogin(login);

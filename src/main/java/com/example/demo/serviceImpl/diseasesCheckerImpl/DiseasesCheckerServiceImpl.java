@@ -102,6 +102,7 @@ public class DiseasesCheckerServiceImpl implements DiseasesCheckerService {
         }
         System.out.println(monitoredHealthParametersList.size());
         Collections.sort(monitoredHealthParametersList);
+        Collections.reverse(monitoredHealthParametersList);
 
         return monitoredHealthParametersList;
     }

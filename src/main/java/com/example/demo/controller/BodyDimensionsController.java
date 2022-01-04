@@ -24,31 +24,30 @@ public class BodyDimensionsController {
         return bodyDimensionsService.getBodyDimensionsByLogin(login);
     }
 
-    @GetMapping("/bodyDimensions/{login}/{day}/{month}/{year}")
-    public Iterable<BodyDimensions> getBodyDimensionsForUser(@PathVariable String login,@PathVariable int day,@PathVariable int month,@PathVariable int year) {
-        return bodyDimensionsService.getBodyDimensionsByLoginAndDate(login,day,month,year);
-    }
-    @GetMapping("/bodyDimensions/{login}/{month}")
-    public Iterable<BodyDimensions> getBodyDimensionsForUserByMonth(@PathVariable String login,@PathVariable int month) {
-        return bodyDimensionsService.getBodyDimensionsByLoginAndMonth(login,month);
-    }
-
-    @GetMapping("/bodyDimensions1/{login}")
-    public double[] getMinMaxParams(@PathVariable String login) {
-        return bodyDimensionsService.getMinMaxParams(login);
-    }
-
-
     @PostMapping("/bodyDimensions/{login}")
     public ResponseEntity<BodyDimensions> addBasicUserData(@RequestBody BodyDimensions bodyDimensions, @PathVariable String login) {
         bodyDimensionsService.addBodyDimensions(login, bodyDimensions.getShoulders(), bodyDimensions.getWaist(), bodyDimensions.getHips(), bodyDimensions.getWeight());
         return new ResponseEntity<BodyDimensions>(HttpStatus.OK);
-
     }
 
     @DeleteMapping("/removeBodyDimensions/{id}")
     public ResponseEntity<HttpStatus> removeBasicUserData(@PathVariable(value = "id") long id) {
         bodyDimensionsService.removeBodyDimensions(id);
         return new ResponseEntity<HttpStatus>(HttpStatus.ACCEPTED);
+    }
+
+    @GetMapping("/bodyDimensions/{login}/{day}/{month}/{year}")
+    public Iterable<BodyDimensions> getBodyDimensionsForUser(@PathVariable String login, @PathVariable int day, @PathVariable int month, @PathVariable int year) {
+        return bodyDimensionsService.getBodyDimensionsByLoginAndDate(login, day, month, year);
+    }
+
+    @GetMapping("/bodyDimensions/{login}/{month}")
+    public Iterable<BodyDimensions> getBodyDimensionsForUserByMonth(@PathVariable String login, @PathVariable int month) {
+        return bodyDimensionsService.getBodyDimensionsByLoginAndMonth(login, month);
+    }
+
+    @GetMapping("/bodyDimensions1/{login}")
+    public double[] getMinMaxParams(@PathVariable String login) {
+        return bodyDimensionsService.getMinMaxParams(login);
     }
 }

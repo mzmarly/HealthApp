@@ -125,10 +125,42 @@ public class NutritionDataApiImpl implements NutritionDataApi {
 
         return nutritionList;
     }
+    @Override
+    public Iterable<Nutrition> geNutritionByLoginAndDate(String login) {
+        var user = userRepository.findByLogin(login).orElseThrow();
+        List<Nutrition> nutritionList = new ArrayList<>();
+        LocalDate date = LocalDate.now();
+        for (Nutrition i : user.getNutritions()) {
+            if (i.getDate() != null) {
+                if (i.getDate().getDayOfMonth() == date.getDayOfMonth() && i.getDate().getMonthValue() == date.getMonthValue() && i.getDate().getYear() == date.getYear()) {
+                    nutritionList.add(i);
+                }
+            }
+        }
+        Collections.sort(nutritionList);
 
+        return nutritionList;
+    }
+
+    @Override
+    public Iterable<DailyNutritionReport> getDailySumUpListByLoginAndDate(String login, int day, int month, int year) {
+        List<DailyNutritionReport> dailyNutritionReportsList = getDailyNutritionReportsList(login);
+        List<DailyNutritionReport> filterList = new ArrayList<>();
+        if (!dailyNutritionReportsList.isEmpty()) {
+            for (DailyNutritionReport parameters : dailyNutritionReportsList) {
+                if (parameters.getDate() != null) {
+                    System.out.println("DATA " + parameters.getDate() + "CAL " + parameters.getCalories());
+                    if (parameters.getDate().getDayOfMonth() == day && parameters.getDate().getMonthValue() == month && parameters.getDate().getYear() == year) {
+                        filterList.add(parameters);
+                    }
+                }
+            }
+        }
+        return filterList;
+    }
 
     public void JsonToObject(String login, String JSONBody, double portionWeight) {
-        long nutritionId = nutritionDataRepository.findAll().size();
+        long nutritionId = nutritionDataRepository.findAll().size()+5;
         var user = userRepository.findByLogin(login).orElseThrow();
         double factor = portionWeight / 100;
         LocalDate date = LocalDate.now();
@@ -178,7 +210,7 @@ public class NutritionDataApiImpl implements NutritionDataApi {
         List<DailyNutritionReport> dailyNutritionReportsList = new ArrayList<>(userReport.getDailyNutritionReports());
         Collections.sort(dailyNutritionReportsList);
         Collections.reverse(dailyNutritionReportsList);
-        System.out.println(dailyNutritionReportsList.get(0).getDailyNutritionReportId());
+//        System.out.println(dailyNutritionReportsList.get(0).getDailyNutritionReportId());
         return dailyNutritionReportsList.get(0);
     }
 
@@ -187,7 +219,7 @@ public class NutritionDataApiImpl implements NutritionDataApi {
         List<DailyNutritionReport> dailyNutritionReportsList = new ArrayList<>(userReport.getDailyNutritionReports());
         Collections.sort(dailyNutritionReportsList);
         Collections.reverse(dailyNutritionReportsList);
-        System.out.println(dailyNutritionReportsList.get(0).getDailyNutritionReportId());
+//        System.out.println(dailyNutritionReportsList.get(0).getDailyNutritionReportId());
         return dailyNutritionReportsList;
     }
 

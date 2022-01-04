@@ -19,4 +19,8 @@ public interface NutritionDataApi {
 
     Iterable<Nutrition> geNutritionByLogin(String login);
 
+    Iterable<DailyNutritionReport> getDailySumUpListByLoginAndDate(String login, int day, int month, int year);
+    Iterable<Nutrition> geNutritionByLoginAndDate(String login);
+
+
 }

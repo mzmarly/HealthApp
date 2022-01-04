@@ -31,6 +31,10 @@ public class NutrientsCheckerController {
     public Iterable<NutrientsPreconditions> getNutrientsPreconditionsForUser(@PathVariable String login) {
         return nutrientsCheckerService.getNutrientsPreconditionsListByLogin(login);
     }
+    @GetMapping("/nutrientsPreconditions/{login}/{day}/{month}/{year}")
+    public Iterable<NutrientsPreconditions> getNutrientsPreconditionsForUserByDate(@PathVariable String login, @PathVariable int day, @PathVariable int month, @PathVariable int year) {
+        return nutrientsCheckerService.getNutrientsPreconditionsListByLoginAndDate(login,day,month,year);
+    }
 
     @GetMapping("/nutrientsChecker")
     public Iterable<NutrientsChecker> getAllNutrientsChecker() {

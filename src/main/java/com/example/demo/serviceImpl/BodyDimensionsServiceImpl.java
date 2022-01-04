@@ -138,6 +138,7 @@ public class BodyDimensionsServiceImpl implements BodyDimensionsService {
             bodyDimensionsList.add(i);
         }
         Collections.sort(bodyDimensionsList);
+        Collections.reverse(bodyDimensionsList);
 
         return bodyDimensionsList;
     }

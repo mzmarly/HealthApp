@@ -62,6 +62,7 @@ public class MonitoredHealthParametersServiceImpl implements MonitoredHealthPara
             monitoredHealthParametersList.add(i);
         }
         Collections.sort(monitoredHealthParametersList);
+        Collections.reverse(monitoredHealthParametersList);
 
         return monitoredHealthParametersList;
 
@@ -95,6 +96,7 @@ public class MonitoredHealthParametersServiceImpl implements MonitoredHealthPara
         var user = userRepository.findByLogin(login).orElseThrow();
         List<MonitoredHealthParameters> monitoredHealthParametersList = new ArrayList<>(user.getMonitoredHealthParameters());
         Collections.sort(monitoredHealthParametersList);
+        Collections.reverse(monitoredHealthParametersList);
 
         return monitoredHealthParametersList;
     }

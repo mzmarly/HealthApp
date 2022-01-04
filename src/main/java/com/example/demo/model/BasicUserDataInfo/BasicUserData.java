@@ -18,16 +18,6 @@ public class BasicUserData implements Comparable<BasicUserData> {
     @Column(name = "height")
     private double height;
 
-    public BasicUserData(long basicUserDataId, int age, Sex sex, PhysicalActivity physicalActivity,double height) {
-        this.basicUserDataId = basicUserDataId;
-        this.age = age;
-        this.sex = sex;
-        this.physicalActivity = physicalActivity;
-        this.height = height;
-    }
-    public BasicUserData() {
-
-    }
     @Column(name = "sex")
     private Sex sex;
 
@@ -37,5 +27,16 @@ public class BasicUserData implements Comparable<BasicUserData> {
     @Override
     public int compareTo(BasicUserData o) {
         return Long.compare(this.getBasicUserDataId(),o.getBasicUserDataId());
+    }
+
+    public BasicUserData(long basicUserDataId, int age, Sex sex, PhysicalActivity physicalActivity,double height) {
+        this.basicUserDataId = basicUserDataId;
+        this.age = age;
+        this.sex = sex;
+        this.physicalActivity = physicalActivity;
+        this.height = height;
+    }
+    public BasicUserData() {
+
     }
 }

@@ -35,9 +35,10 @@ public class UserReportServiceImpl implements UserReportService {
         var user = userRepository.findByLogin(login).orElseThrow();
         long userReportId = userReportRepository.findAll().size();
         double bmi = diseasesCheckerService.checkBMI(login);
+        double whr = diseasesCheckerService.checkWHR(login);
         diseasesCheckerService.checkBMI(login);
         LocalDate date = LocalDate.now();
-        UserReport userReport = new UserReport(userReportId, date, hypertensionLevel, diabetesLevel, bmi, 0.0);
+        UserReport userReport = new UserReport(userReportId, date, hypertensionLevel, diabetesLevel, bmi, whr);
         userReportRepository.save(userReport);
         Set<UserReport> userReportSet = user.getUserReports();
         userReportSet.add(userReport);
@@ -60,6 +61,7 @@ public class UserReportServiceImpl implements UserReportService {
             userReportList.add(i);
         }
         Collections.sort(userReportList);
+        Collections.reverse(userReportList);
         return userReportList;
     }
 }
